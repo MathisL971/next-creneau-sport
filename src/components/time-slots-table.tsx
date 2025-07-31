@@ -31,7 +31,6 @@ import {
 } from '@/components/ui/table';
 import { FacilityReservation } from '@/types/reservation';
 import { useFilters } from '@/hooks/useFilters';
-import { useRouter } from 'next/navigation';
 
 export type TimeSlotsResponse = {
   results: FacilityReservation[];
@@ -147,12 +146,6 @@ export default function TimeSlotsTable({
 }: {
   timeSlots: TimeSlotsResponse;
 }) {
-  const router = useRouter();
-
-  const handleReservation = (reservation: FacilityReservation) => {
-    router.push(`/reservation/${reservation.facility.id}`);
-  };
-
   const { filters, updateFilters } = useFilters();
   const [isClient, setIsClient] = React.useState(false);
 
@@ -191,7 +184,14 @@ export default function TimeSlotsTable({
 
   // Update filters when pagination changes locally
   const handlePaginationChange = React.useCallback(
-    (updatedPagination: any) => {
+    (
+      updatedPagination:
+        | ((old: { pageIndex: number; pageSize: number }) => {
+            pageIndex: number;
+            pageSize: number;
+          })
+        | { pageIndex: number; pageSize: number }
+    ) => {
       if (typeof updatedPagination === 'function') {
         setPagination((prev) => {
           const newPagination = updatedPagination(prev);

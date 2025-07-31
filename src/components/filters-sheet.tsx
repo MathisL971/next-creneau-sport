@@ -2,7 +2,6 @@
 
 import {
   Sheet,
-  SheetContent as OriginalSheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
@@ -275,7 +274,7 @@ export default function FiltersSheet() {
     if (!hasRequiredFilters) {
       setOpen(true);
     }
-  }, [filters, hasRequiredFilters]);
+  }, [filters, hasRequiredFilters, setOpen]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -323,7 +322,7 @@ export default function FiltersSheet() {
               <AlertDescription>
                 <p>
                   Veuillez sélectionner au moins un sport, une date et un
-                  arrondissement afin d'optimiser les temps de recherche.
+                  arrondissement afin d&apos;optimiser les temps de recherche.
                 </p>
               </AlertDescription>
             </Alert>

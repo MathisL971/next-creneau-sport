@@ -13,9 +13,9 @@ export default function AppFooter() {
               À propos
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Interface alternative dédiée à la réservation d'espaces sportifs
-              et de loisirs de la Ville de Montréal. Créée pour offrir une
-              expérience utilisateur améliorée par rapport à la plateforme
+              Interface alternative dédiée à la réservation d&apos;espaces
+              sportifs et de loisirs de la Ville de Montréal. Créée pour offrir
+              une expérience utilisateur améliorée par rapport à la plateforme
               officielle, avec une recherche plus intuitive et une navigation
               simplifiée.
             </p>

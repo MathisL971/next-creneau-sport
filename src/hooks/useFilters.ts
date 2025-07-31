@@ -17,7 +17,7 @@ const DEFAULT_FILTERS: Filters = {
 } as const;
 
 // Helper functions to serialize/deserialize query parameters
-const serializeValue = (value: any): string | undefined => {
+const serializeValue = (value: unknown): string | undefined => {
   if (value === null || value === undefined) {
     return undefined;
   }
@@ -40,8 +40,8 @@ const serializeValue = (value: any): string | undefined => {
 const deserializeValue = (
   key: string,
   value: string | string[],
-  defaultValue: any
-): any => {
+  defaultValue: unknown
+): unknown => {
   if (!value || (Array.isArray(value) && value.length === 0)) {
     return defaultValue;
   }
@@ -78,6 +78,7 @@ const parseQueryToFilters = (
     const defaultValue = DEFAULT_FILTERS[key];
 
     if (queryValue !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (filters as any)[key] = deserializeValue(key, queryValue, defaultValue);
     }
   });
