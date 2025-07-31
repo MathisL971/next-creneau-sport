@@ -66,11 +66,13 @@ export default function AppFooter() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-8 pt-6 border-t flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
-          <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+        <div className="mt-8 pt-6 border-t flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start space-x-1 text-xs text-muted-foreground">
             <span>© {currentYear} Application non-officielle pour</span>
-            <Heart className="h-3 w-3 text-red-500" />
-            <span>les loisirs montréalais</span>
+            <div className="flex items-center space-x-1">
+              <Heart className="h-3 w-3 text-red-500 flex-shrink-0" />
+              <span>les loisirs montréalais</span>
+            </div>
           </div>
           <div className="text-xs text-muted-foreground">
             Données fournies par la Ville de Montréal

@@ -39,6 +39,7 @@ import { Input } from './ui/input';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const sports = [
   { id: 1, name: 'tennis' },
@@ -225,6 +226,7 @@ const filtersEqual = (
 
 export default function FiltersSheet() {
   const { filters, updateFilters, hasRequiredFilters } = useFilters();
+  const breakpoint = useBreakpoint();
   const [searchString, setSearchString] = useState(
     filters.searchString ?? undefined
   );
@@ -404,7 +406,9 @@ export default function FiltersSheet() {
                   </span>
                 ) : (
                   <span className="text-muted-foreground">
-                    Sélectionnez des arrondissements...
+                    {breakpoint === 'xs'
+                      ? `Sélectionnez des arrondissements`.slice(0, 25) + '...'
+                      : `Sélectionnez des arrondissements...`}
                   </span>
                 )}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

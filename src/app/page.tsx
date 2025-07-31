@@ -35,7 +35,10 @@ export default async function Home({
               <TimeSlots searchParams={searchParams} />
             </Suspense>
           ) : (
-            <Alert variant="default" className="m-auto w-1/3">
+            <Alert
+              variant="default"
+              className="mx-auto max-w-md w-full sm:max-w-lg"
+            >
               <AlertCircleIcon />
               <AlertTitle>Filtres obligatoires manquants</AlertTitle>
               <AlertDescription>

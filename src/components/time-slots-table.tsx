@@ -332,8 +332,8 @@ export default function TimeSlotsTable({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
+      <div className="flex flex-col space-y-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-2 gap-2">
+        <div className="text-muted-foreground text-sm order-2 sm:order-1 text-center sm:text-left">
           {isClient && totalResults > 0 && (
             <span>
               Affichage de {filters.offset + 1} à{' '}
@@ -343,10 +343,13 @@ export default function TimeSlotsTable({
           )}
         </div>
 
-        <div className="flex items-center space-x-6 lg:space-x-8">
+        <div className="flex items-center space-x-2 sm:space-x-6 lg:space-x-8 order-1 sm:order-2 justify-center sm:justify-end">
           {/* Page size selector */}
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Lignes par page</p>
+            <p className="text-sm font-medium hidden sm:block">
+              Lignes par page
+            </p>
+            <p className="text-sm font-medium sm:hidden">Lignes</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
@@ -372,12 +375,12 @@ export default function TimeSlotsTable({
           </div>
 
           {/* Page navigation info */}
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex min-w-0 items-center justify-center text-sm font-medium">
             {isClient ? (
-              <>
+              <span className="whitespace-nowrap">
                 Page {pagination.pageIndex + 1} sur{' '}
                 {Math.max(1, table.getPageCount())}
-              </>
+              </span>
             ) : (
               'Chargement...'
             )}

@@ -46,7 +46,6 @@ Cette application est une réponse directe aux défis d'utilisabilité de la pla
 - **UI Components** : [Radix UI](https://www.radix-ui.com/)
 - **Icons** : [Lucide React](https://lucide.dev/)
 - **State Management** : [Jotai](https://jotai.org/)
-- **Data Fetching** : [TanStack Query](https://tanstack.com/query)
 - **Theming** : [next-themes](https://github.com/pacocoursey/next-themes)
 
 ---
