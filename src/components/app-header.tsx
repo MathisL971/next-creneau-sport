@@ -1,6 +1,8 @@
 import { ModeToggle } from './mode-toggle';
 import { CalendarDays, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from './ui/button';
 
 export default function AppHeader() {
   return (
@@ -28,6 +30,45 @@ export default function AppHeader() {
             </div>
           </Link>
           <nav className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              asChild
+              className="hidden sm:flex items-center space-x-2 text-xs bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 hover:bg-primary/10 hover:border-primary/30 text-primary hover:text-primary"
+            >
+              <a
+                href="https://ko-fi.com/mathislefranc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/kofi_symbol.webp"
+                  alt="Ko-fi"
+                  width={16}
+                  height={12}
+                />
+                <span>Soutenir</span>
+              </a>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="sm:hidden text-primary hover:text-primary hover:bg-primary/10"
+            >
+              <a
+                href="https://ko-fi.com/mathislefranc"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/kofi_symbol.webp"
+                  alt="Ko-fi"
+                  width={16}
+                  height={12}
+                />
+              </a>
+            </Button>
             <ModeToggle />
           </nav>
         </div>

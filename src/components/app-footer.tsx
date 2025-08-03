@@ -1,4 +1,5 @@
 import { ExternalLink, Heart, Info } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AppFooter() {
   const currentYear = new Date().getFullYear();
@@ -43,6 +44,20 @@ export default function AppFooter() {
               >
                 <ExternalLink className="h-3 w-3" />
                 <span>Ville de Montréal</span>
+              </a>
+              <a
+                href="https://ko-fi.com/mathislefranc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-sm text-primary hover:text-primary/80 transition-colors"
+              >
+                <Image
+                  src="/kofi_symbol.webp"
+                  alt="Ko-fi"
+                  width={16}
+                  height={12}
+                />
+                <span>Soutenir le projet</span>
               </a>
             </div>
           </div>
