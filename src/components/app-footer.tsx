@@ -13,11 +13,11 @@ export default function AppFooter() {
               À propos
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Interface alternative dédiée à la réservation d&apos;espaces
-              sportifs et de loisirs de la Ville de Montréal. Créée pour offrir
-              une expérience utilisateur améliorée par rapport à la plateforme
-              officielle, avec une recherche plus intuitive et une navigation
-              simplifiée.
+              CréneauSport est une interface alternative dédiée à la réservation
+              d&apos;espaces sportifs et de loisirs de la Ville de Montréal.
+              Créée pour offrir une expérience utilisateur améliorée par rapport
+              à la plateforme officielle, avec une recherche plus intuitive et
+              une navigation simplifiée.
             </p>
           </div>
 
@@ -71,7 +71,7 @@ export default function AppFooter() {
             <span>© {currentYear} Application non-officielle pour</span>
             <div className="flex items-center space-x-1">
               <Heart className="h-3 w-3 text-red-500 flex-shrink-0" />
-              <span>les loisirs montréalais</span>
+              <span>CréneauSport</span>
             </div>
           </div>
           <div className="text-xs text-muted-foreground">

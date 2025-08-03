@@ -13,7 +13,7 @@ export default function AppHeader() {
               </div>
               <div className="min-w-0">
                 <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">
-                  Loisirs Montréal
+                  CréneauSport
                 </h1>
                 <div className="hidden sm:flex items-center space-x-1 text-xs text-muted-foreground">
                   <MapPin className="h-3 w-3 flex-shrink-0" />

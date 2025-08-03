@@ -1,6 +1,6 @@
-# 🏟️ Loisirs Montréal
+# 🏟️ CréneauSport
 
-**Interface alternative dédiée à la réservation d'espaces sportifs et de loisirs de la Ville de Montréal**
+**CréneauSport - Interface alternative dédiée à la réservation d'espaces sportifs et de loisirs de la Ville de Montréal**
 
 Une application web moderne créée pour offrir une expérience utilisateur améliorée par rapport à la plateforme officielle, avec une recherche plus intuitive et une navigation simplifiée.
 
@@ -61,8 +61,8 @@ Cette application est une réponse directe aux défis d'utilisabilité de la pla
 
 ```bash
 # Cloner le projet
-git clone https://github.com/your-username/next-loisirs-montreal.git
-cd next-loisirs-montreal
+git clone https://github.com/your-username/next-creneau-sport.git
+cd next-creneau-sport
 
 # Installer les dépendances
 pnpm install
@@ -146,4 +146,4 @@ Cette application est **non officielle** et n'est pas affiliée à la Ville de M
 
 ---
 
-**Fait avec ❤️ pour la communauté montréalaise**
+**CréneauSport - Fait avec ❤️ pour la communauté montréalaise**

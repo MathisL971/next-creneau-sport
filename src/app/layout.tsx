@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Loisirs Montréal',
+  title: 'CréneauSport',
   description:
     'Trouvez et réservez des créneaux disponibles pour vos activités sportives à Montréal',
 };
