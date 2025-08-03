@@ -73,11 +73,11 @@ export default function Home() {
         <div className="max-w-4xl w-full">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl mb-6">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
               Trouvez vos créneaux de
               <span className="text-primary block">loisirs à Montréal</span>
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Découvrez et réservez facilement des créneaux pour vos activités
               sportives préférées dans les installations municipales de
               Montréal.
@@ -85,11 +85,11 @@ export default function Home() {
           </div>
 
           {/* Search Form */}
-          <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg border border-gray-200 dark:border-neutral-700 p-8 mb-8">
+          <div className="bg-white dark:bg-card rounded-2xl shadow-lg border border-gray-200 dark:border-border p-8 mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
               {/* Sport Selection */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <TagIcon className="size-4" />
                   Sport
                 </label>
@@ -112,7 +112,7 @@ export default function Home() {
               </div>
               {/* Borough Selection */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MapPinIcon className="size-4" />
                   Arrondissement
                 </label>
@@ -138,7 +138,7 @@ export default function Home() {
 
               {/* Date Selection */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <CalendarIcon className="size-4" />
                   Dates ({selectedDates.length} sélectionnée
                   {selectedDates.length !== 1 ? 's' : ''})
@@ -184,7 +184,7 @@ export default function Home() {
             {/* Selected Dates Display */}
             {selectedDates.length > 0 && (
               <div className="mb-6">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <p className="text-sm font-medium text-foreground mb-2">
                   Dates sélectionnées:
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -223,7 +223,7 @@ export default function Home() {
             </Button>
 
             {!isFormValid && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
+              <p className="text-sm text-muted-foreground mt-2 text-center">
                 Veuillez sélectionner un sport, un arrondissement et des dates
                 pour effectuer une recherche
               </p>
@@ -236,10 +236,10 @@ export default function Home() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
                 <TagIcon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-semibold text-foreground">
                 Sélection simplifiée
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 Choisissez facilement votre sport et votre secteur préféré
               </p>
             </div>
@@ -247,10 +247,10 @@ export default function Home() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
                 <CalendarIcon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-semibold text-foreground">
                 Planification flexible
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 Sélectionnez plusieurs dates pour maximiser vos options
               </p>
             </div>
@@ -258,10 +258,10 @@ export default function Home() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto">
                 <MapPinIcon className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-semibold text-foreground">
                 Proximité
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 Découvrez les installations près de chez vous
               </p>
             </div>

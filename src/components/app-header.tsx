@@ -1,7 +1,7 @@
 'use client';
 
 import { ModeToggle } from './mode-toggle';
-import { CalendarDays, MapPin, MessageSquare } from 'lucide-react';
+import { MapPin, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
@@ -14,8 +14,14 @@ export default function AppHeader() {
           <Link href="/">
             <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
               <div className="flex items-center space-x-2">
-                <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-lg flex-shrink-0">
-                  <CalendarDays className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
+                <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-sm flex-shrink-0 overflow-hidden">
+                  <Image
+                    src="/creneau-sport.PNG"
+                    alt="CréneauSport Logo"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="min-w-0">
                   <h1 className="text-lg sm:text-xl font-bold tracking-tight truncate">
