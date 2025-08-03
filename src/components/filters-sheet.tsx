@@ -288,10 +288,11 @@ export default function FiltersSheet() {
                   mode="multiple"
                   selected={dates?.map((d) => new Date(d))}
                   captionLayout="dropdown"
-                  disabled={(date) =>
-                    date <
-                    new Date(new Date().setDate(new Date().getDate() - 1))
-                  }
+                  disabled={(date) => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    return date < today;
+                  }}
                   onSelect={(d) => {
                     setDates(d?.map((d) => d.toISOString()) ?? []);
                   }}

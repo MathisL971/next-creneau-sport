@@ -163,7 +163,11 @@ export default function Home() {
                       mode="multiple"
                       selected={selectedDates}
                       onSelect={(dates) => setSelectedDates(dates || [])}
-                      disabled={(date) => date < new Date()}
+                      disabled={(date) => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        return date < today;
+                      }}
                       initialFocus
                     />
                     <div className="p-3 border-t">
