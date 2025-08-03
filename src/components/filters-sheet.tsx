@@ -39,98 +39,7 @@ import * as SheetPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
-
-const sports = [
-  { id: 1, name: 'tennis' },
-  { id: 2, name: 'pickleball' },
-  { id: 3, name: 'tennis de table' },
-  { id: 4, name: 'volleyball' },
-];
-
-const boroughs = [
-  { id: 3, name: 'Ahuntsic - Cartierville' },
-  { id: 9, name: 'Côte-des-Neiges - Notre-Dame-de-Grâce' },
-  { id: 2, name: 'Lachine' },
-  { id: 19, name: 'LaSalle' },
-  { id: 7, name: 'Le Plateau-Mont-Royal' },
-  { id: 16, name: "L'Île-Bizard - Sainte-Geneviève" },
-  { id: 6, name: 'Mercier - Hochelaga-Maisonneuve' },
-  { id: 15, name: 'Outremont' },
-  { id: 11, name: 'Rivière-des-Prairies - Pointe-aux-Trembles' },
-  { id: 5, name: 'Rosemont - La Petite-Patrie' },
-  { id: 17, name: 'Saint-Laurent' },
-  { id: 14, name: 'Saint-Léonard' },
-  { id: 1, name: 'Verdun' },
-  { id: 8, name: 'Ville-Marie' },
-  { id: 4, name: 'Villeray-Saint-Michel - Parc-Extension' },
-];
-
-const sites = [
-  { id: -1, name: 'Tous' },
-  { id: 694, name: 'Académie LaurenHill Junior campus' },
-  { id: 669, name: 'Aréna Jacques-Lemaire' },
-  { id: 1707, name: 'Aréna Saint-Louis' },
-  { id: 882, name: 'Centre de Tennis Cavelier' },
-  { id: 13, name: 'Centre Léonardo-da-Vinci' },
-  { id: 1628, name: 'Centre Pierre-Charbonneau' },
-  { id: 2120, name: 'Centre Sanaaq' },
-  { id: 1265, name: 'Centre sportif Jean-Rougeau' },
-  { id: 85, name: 'Complexe communautaire Saint-Léonard, t sport' },
-  { id: 813, name: 'Complexe sportif Claude-Robillard' },
-  { id: 848, name: 'Complexe sportif Marie-Victorin' },
-  { id: 593, name: 'Complexe sportif Saint-Laurent' },
-  { id: 674, name: 'École Île-des-Soeurs' },
-  { id: 678, name: 'École Notre-Dame-de-Lourdes' },
-  { id: 679, name: 'École Notre-Dame-des-Sept-Douleurs' },
-  { id: 676, name: 'École secondaire Monseigneur-Richard' },
-  { id: 956, name: 'Le TAZ' },
-  { id: 1070, name: 'Parc Arthur-Therrien, terrain de sport' },
-  { id: 1520, name: 'Parc Beaubien, terrain de sport' },
-  { id: 67, name: 'Parc Coubertin, terrain de sport' },
-  { id: 1061, name: 'Parc de la Fontaine, Île-des-Soeurs, Terrain sport' },
-  { id: 740, name: 'Parc de la Reine-Élisabeth, terrain de sport' },
-  { id: 1086, name: "Parc de L'Honorable-George-O'Reilly" },
-  { id: 2073, name: 'Parc de Mésy' },
-  { id: 2144, name: 'Parc des Érables, terrain de sport' },
-  { id: 781, name: 'Parc des Hirondelles, terrain de sport' },
-  { id: 1068, name: 'Parc Elgar, terrain de sport' },
-  { id: 69, name: 'Parc Ferland, terrain de sport' },
-  { id: 70, name: 'Parc Giuseppe-Garibaldi, terrain de sport' },
-  { id: 71, name: 'Parc Hébert, terrain de sport' },
-  { id: 455, name: 'Parc Jean-Duceppe, terrain de sport' },
-  { id: 1726, name: 'Parc Jeanne-Mance, terrains sportifs' },
-  { id: 1533, name: 'Parc Joseph-Paré, terrain de sport' },
-  { id: 1734, name: 'Parc La Fontaine, terrains sportifs' },
-  { id: 73, name: 'Parc Ladauversière, terrain de sport' },
-  { id: 75, name: 'Parc Luigi-Pirandello, terrain de sport' },
-  { id: 804, name: 'Parc Marcelin-Wilson, terrain de sport' },
-  { id: 1755, name: 'Parc Martin-Luther-King, terrain de sport' },
-  { id: 792, name: 'Parc Nicolas-Viel, terrain de sport' },
-  { id: 1472, name: 'Parc Père-Marquette, terrain de sport' },
-  { id: 74, name: 'Parc Pie-XII, terrain de sport' },
-  { id: 1884, name: 'Parc Warren-Allmand, terrain de sport' },
-  { id: 86, name: 'Parc Wilfrid-Bastien, terrain de sport' },
-  { id: 1081, name: 'Parc Wilson, terrain de sport' },
-  { id: 655, name: 'Patinoire du Centre sportif Dollard-Saint-Laurent' },
-  { id: 911, name: 'Stade de soccer de Montréal' },
-  { id: 87, name: 'Stade Hébert' },
-  { id: 1033, name: 'Terrain de sport - Parc Gohier' },
-  { id: 810, name: 'Terrains de sport - Marcel-Laurin' },
-  { id: 1002, name: 'Terrains de sport - Marlborough' },
-  { id: 1014, name: 'Terrains de sport - Parc Alexis-Nihon' },
-  { id: 1029, name: 'Terrains de sport - Parc Cousineau' },
-  { id: 1035, name: 'Terrains de sport - Parc Hartenstein' },
-  { id: 1048, name: 'Terrains de sport - Parc Noël-Sud' },
-  { id: 1004, name: 'Terrains de sport - Parc Painter' },
-  { id: 1084, name: 'Terrains de sport - Parc Philippe-Laheurte' },
-  { id: 1069, name: 'Terrains de sport - Parc Saint-Laurent' },
-  { id: 919, name: 'Terrains de sport du parc Jonathan-Wilson' },
-  { id: 653, name: 'Terrains de tennis Garneau (4)' },
-  { id: 682, name: 'Terrains de tennis Joyce (3)' },
-  { id: 654, name: 'Terrains de tennis Saint-Viateur (6)' },
-  { id: 866, name: 'Terrains extérieurs Claude-Robillard' },
-  { id: 2060, name: 'Terrains sportifs du parc LaSalle' },
-];
+import { sports, boroughs, sites } from '@/data/facilities';
 
 export const filtersSheetOpenAtom = atom(false);
 
@@ -271,9 +180,10 @@ export default function FiltersSheet() {
     // Update last saved filters to match current filters
     setLastSavedFilters(newFilterState);
 
-    if (!hasRequiredFilters) {
-      setOpen(true);
-    }
+    // Removed automatic opening of filters sheet
+    // if (!hasRequiredFilters) {
+    //   setOpen(true);
+    // }
   }, [filters, hasRequiredFilters, setOpen]);
 
   // Close dropdown when clicking outside

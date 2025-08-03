@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import AppHeader from '@/components/app-header';
+import AppFooter from '@/components/app-footer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,6 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
+        style={{
+          fontFamily: geistSans.style.fontFamily,
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
       >
         <ThemeProvider
           attribute="class"
@@ -36,7 +44,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AppHeader />
+          <main className="flex flex-col w-full grow">{children}</main>
+          <AppFooter />
         </ThemeProvider>
       </body>
     </html>

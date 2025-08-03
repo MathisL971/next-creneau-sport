@@ -6,9 +6,9 @@ export default function AppFooter() {
   return (
     <footer className="border-t bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
           {/* About Section */}
-          <div className="space-y-3">
+          <div className="space-y-3 col-span-2">
             <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
               À propos
             </h3>
@@ -20,7 +20,6 @@ export default function AppFooter() {
               une navigation simplifiée.
             </p>
           </div>
-
           {/* Resources Section */}
           <div className="space-y-3">
             <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
@@ -45,22 +44,6 @@ export default function AppFooter() {
                 <ExternalLink className="h-3 w-3" />
                 <span>Ville de Montréal</span>
               </a>
-            </div>
-          </div>
-
-          {/* Help Section */}
-          <div className="space-y-3">
-            <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-              Aide
-            </h3>
-            <div className="space-y-2">
-              <div className="flex items-start space-x-2 text-sm text-muted-foreground">
-                <Info className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                <span>
-                  Sélectionnez un sport, un arrondissement et une date pour
-                  commencer votre recherche.
-                </span>
-              </div>
             </div>
           </div>
         </div>
