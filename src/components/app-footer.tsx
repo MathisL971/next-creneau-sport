@@ -1,4 +1,4 @@
-import { ExternalLink, Heart, Info } from 'lucide-react';
+import { ExternalLink, Heart, Info, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AppFooter() {
@@ -44,6 +44,15 @@ export default function AppFooter() {
               >
                 <ExternalLink className="h-3 w-3" />
                 <span>Ville de Montréal</span>
+              </a>
+              <a
+                href="https://creneausport.canny.io/feedback"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <MessageSquare className="h-3 w-3" />
+                <span>Feedback & Suggestions</span>
               </a>
               <a
                 href="https://ko-fi.com/mathislefranc"

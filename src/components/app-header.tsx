@@ -1,5 +1,7 @@
+'use client';
+
 import { ModeToggle } from './mode-toggle';
-import { CalendarDays, MapPin } from 'lucide-react';
+import { CalendarDays, MapPin, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
@@ -30,6 +32,32 @@ export default function AppHeader() {
             </div>
           </Link>
           <nav className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+            {/* Feedback Button - Desktop */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                window.open('https://creneausport.canny.io/feedback', '_blank');
+              }}
+              className="hidden sm:flex items-center space-x-2 text-xs bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 hover:bg-primary/10 hover:border-primary/30 text-primary hover:text-primary"
+            >
+              <MessageSquare className="h-3 w-3" />
+              <span>Feedback</span>
+            </Button>
+
+            {/* Feedback Button - Mobile */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                window.open('https://creneausport.canny.io/feedback', '_blank');
+              }}
+              style={{ marginRight: 0 }}
+              className="sm:hidden text-primary hover:text-primary hover:bg-primary/10"
+            >
+              <MessageSquare className="h-4 w-4" />
+            </Button>
+
             <Button
               variant="outline"
               size="sm"
