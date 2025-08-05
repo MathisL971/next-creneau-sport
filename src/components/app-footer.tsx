@@ -1,4 +1,4 @@
-import { ExternalLink, Heart, Info, MessageSquare } from 'lucide-react';
+import { ExternalLink, Heart, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AppFooter() {

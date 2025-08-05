@@ -1,0 +1,68 @@
+name: ❓ Question
+description: Poser une question sur le projet ou son utilisation
+title: '[Question]: '
+labels: ['question', 'triage']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vous avez une question sur CréneauSport ? Nous sommes là pour vous aider ! 🤝
+
+        Avant de poser votre question :
+        - Consultez la [documentation](../README.md)
+        - Vérifiez les [issues existantes](../../issues)
+        - Regardez les [discussions](../../discussions) si disponibles
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: 🔍 Type de question
+      description: Quel type de question avez-vous ?
+      options:
+        - Utilisation générale
+        - Configuration / Installation
+        - Développement / Contribution
+        - Fonctionnalités existantes
+        - Données / API
+        - Performance
+        - Accessibilité
+        - Autre
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: ❓ Votre question
+      description: Posez votre question de manière claire et détaillée
+      placeholder: 'Décrivez votre question ou le problème que vous rencontrez...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🔎 Contexte
+      description: Donnez plus de contexte si nécessaire (ce que vous essayez de faire, votre environnement, etc.)
+      placeholder: "Exemple: J'essaie de comprendre comment filtrer les résultats par distance..."
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: 🔧 Ce que vous avez déjà essayé
+      description: Avez-vous déjà essayé quelque chose pour résoudre votre question ?
+      placeholder: "J'ai regardé dans la documentation, testé différents filtres..."
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: ✅ Recherches effectuées
+      description: Confirmez que vous avez fait ces vérifications
+      options:
+        - label: J'ai consulté le README et la documentation
+          required: true
+        - label: J'ai vérifié les issues existantes
+          required: true
+        - label: Ma question n'a pas été posée récemment
+          required: true

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/mathis-m/next-loisirs-montreal/blob/main/README.md
+    about: Consultez la documentation du projet
+  - name: 💬 Discussions
+    url: https://github.com/mathis-m/next-loisirs-montreal/discussions
+    about: Posez des questions générales ou discutez du projet
+  - name: 🚀 Guide de Contribution
+    url: https://github.com/mathis-m/next-loisirs-montreal/blob/main/CONTRIBUTING.md
+    about: Apprenez comment contribuer au projet

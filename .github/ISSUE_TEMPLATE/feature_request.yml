@@ -1,0 +1,118 @@
+name: ✨ Demande de Fonctionnalité
+description: Proposer une nouvelle fonctionnalité ou amélioration
+title: '[Feature]: '
+labels: ['enhancement', 'triage']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de proposer une amélioration pour CréneauSport ! 🚀
+
+        Avant de continuer, veuillez :
+        - Vérifier que cette fonctionnalité n'a pas déjà été proposée
+        - S'assurer qu'elle correspond aux objectifs du projet
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🎯 Problème ou besoin
+      description: Quel problème cette fonctionnalité résoudrait-elle ? Quel besoin utilisateur adresse-t-elle ?
+      placeholder: "Exemple: En tant qu'utilisateur, j'ai du mal à visualiser les créneaux sur plusieurs jours d'affilée..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 Solution proposée
+      description: Décrivez la fonctionnalité que vous aimeriez voir implémentée
+      placeholder: 'Exemple: Ajouter une vue calendrier mensuelle qui permet de voir tous les créneaux disponibles sur plusieurs semaines...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives considérées
+      description: Avez-vous pensé à d'autres façons de résoudre ce problème ?
+      placeholder: 'Exemple: Une vue hebdomadaire pourrait aussi fonctionner, mais la vue mensuelle serait plus pratique...'
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📈 Priorité suggérée
+      description: Quelle priorité suggérez-vous pour cette fonctionnalité ?
+      options:
+        - Basse (Nice to have)
+        - Moyenne (Amélioration notable)
+        - Haute (Besoin important)
+        - Critique (Bloquant pour l'utilisation)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: 🛠️ Complexité estimée
+      description: À votre avis, quelle serait la complexité d'implémentation ?
+      options:
+        - Simple (quelques heures)
+        - Moyenne (quelques jours)
+        - Complexe (quelques semaines)
+        - Très complexe (refactoring majeur)
+        - Je ne sais pas
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: 🎨 Domaines impactés
+      description: Quels aspects de l'application seraient concernés ?
+      options:
+        - label: Interface utilisateur (UI)
+        - label: Expérience utilisateur (UX)
+        - label: Performance
+        - label: Accessibilité
+        - label: Données / API
+        - label: Navigation
+        - label: Filtres et recherche
+        - label: Responsive design
+        - label: Autre
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: 👤 User Stories
+      description: Décrivez les scénarios d'utilisation sous forme de user stories
+      placeholder: |
+        En tant qu'utilisateur, je veux...
+        En tant que parent cherchant des activités pour mon enfant, j'aimerais...
+        Quand je recherche des créneaux de tennis, je veux...
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Maquettes ou exemples
+      description: Si vous avez des idées visuelles, des liens vers des exemples similaires, ou des maquettes
+      placeholder: "Liens, images, ou descriptions détaillées de l'interface souhaitée"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📋 Informations supplémentaires
+      description: Toute autre information pertinente (contraintes techniques, considérations d'accessibilité, etc.)
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Vérifications
+      description: Veuillez confirmer que vous avez effectué ces vérifications
+      options:
+        - label: J'ai vérifié qu'une demande similaire n'existe pas déjà
+          required: true
+        - label: Cette fonctionnalité correspond aux objectifs du projet
+          required: true
+        - label: J'ai fourni suffisamment de détails pour comprendre la demande
+          required: true

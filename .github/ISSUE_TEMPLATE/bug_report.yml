@@ -1,0 +1,127 @@
+name: 🐛 Rapport de Bug
+description: Signaler un problème pour nous aider à l'améliorer
+title: '[Bug]: '
+labels: ['bug', 'triage']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler ce bug ! Vos retours nous aident à améliorer CréneauSport.
+
+        Avant de continuer, veuillez :
+        - Vérifier que ce bug n'a pas déjà été signalé
+        - S'assurer que vous utilisez la dernière version
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 Description du problème
+      description: Décrivez clairement et précisément le problème rencontré
+      placeholder: "Exemple: Lorsque je clique sur le filtre 'Hockey', aucun résultat ne s'affiche alors qu'il devrait y en avoir."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔍 Étapes pour reproduire
+      description: Listez les étapes exactes pour reproduire le problème
+      placeholder: |
+        1. Aller sur la page d'accueil
+        2. Sélectionner 'Hockey' dans les sports
+        3. Choisir un arrondissement
+        4. Cliquer sur 'Rechercher'
+        5. Observer que...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Comportement attendu
+      description: Que devrait-il se passer normalement ?
+      placeholder: "Les créneaux de hockey disponibles devraient s'afficher dans le tableau."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Comportement observé
+      description: Que se passe-t-il réellement ?
+      placeholder: "Le tableau reste vide avec le message 'Aucun créneau trouvé'."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📷 Captures d'écran
+      description: Si applicable, ajoutez des captures d'écran pour aider à expliquer le problème
+      placeholder: 'Collez vos images ici ou glissez-les dans cette zone'
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: 🌐 Navigateur
+      description: Sur quel navigateur le problème se produit-il ?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Opera
+        - Autre
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Version du navigateur
+      description: Quelle version du navigateur utilisez-vous ?
+      placeholder: 'ex: 120.0.6099.129'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 📱 Type d'appareil
+      description: Sur quel type d'appareil le problème se produit-il ?
+      options:
+        - Desktop/Ordinateur
+        - Mobile/Téléphone
+        - Tablette
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Système d'exploitation
+      description: Quel système d'exploitation utilisez-vous ?
+      placeholder: 'ex: Windows 11, macOS Sonoma, iOS 17, Android 14'
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📋 Informations supplémentaires
+      description: Toute autre information qui pourrait aider à résoudre le problème
+      placeholder: 'Console errors, network issues, specific conditions, etc.'
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: ✅ Vérifications
+      description: Veuillez confirmer que vous avez effectué ces vérifications
+      options:
+        - label: J'ai vérifié qu'un issue similaire n'existe pas déjà
+          required: true
+        - label: J'ai testé sur la dernière version disponible
+          required: true
+        - label: J'ai fourni toutes les informations demandées
+          required: true

@@ -1,5 +1,11 @@
 # 🏟️ CréneauSport
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/ci.yml/badge.svg)](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/codeql.yml/badge.svg)](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/codeql.yml)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Contributors](https://img.shields.io/github/contributors/mathis-m/next-loisirs-montreal.svg)](https://github.com/mathis-m/next-loisirs-montreal/graphs/contributors)
+
 **CréneauSport - Interface alternative dédiée à la réservation d'espaces sportifs et de loisirs de la Ville de Montréal**
 
 Une application web moderne créée pour offrir une expérience utilisateur améliorée par rapport à la plateforme officielle, avec une recherche plus intuitive et une navigation simplifiée.
@@ -61,8 +67,8 @@ Cette application est une réponse directe aux défis d'utilisabilité de la pla
 
 ```bash
 # Cloner le projet
-git clone https://github.com/your-username/next-creneau-sport.git
-cd next-creneau-sport
+git clone https://github.com/mathis-m/next-loisirs-montreal.git
+cd next-loisirs-montreal
 
 # Installer les dépendances
 pnpm install
@@ -118,17 +124,44 @@ src/
 
 Les contributions sont les bienvenues ! Ce projet vise à améliorer l'accès aux services municipaux pour tous les Montréalais.
 
-1. Fork le projet
-2. Créez votre branche (`git checkout -b feature/AmazingFeature`)
-3. Committez vos changements (`git commit -m 'Add AmazingFeature'`)
-4. Push sur la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrez une Pull Request
+Consultez notre [Guide de Contribution](CONTRIBUTING.md) pour commencer.
+
+### 🚀 Comment contribuer
+
+1. 🍴 [Forkez le projet](../../fork)
+2. 🌿 Créez votre branche (`git checkout -b feature/AmazingFeature`)
+3. ✨ Committez vos changements (`git commit -m 'feat: add AmazingFeature'`)
+4. 📤 Push sur la branche (`git push origin feature/AmazingFeature`)
+5. 🔄 Ouvrez une [Pull Request](../../compare)
+
+### 📋 Types de contributions recherchées
+
+- 🐛 **Corrections de bugs**
+- ✨ **Nouvelles fonctionnalités**
+- 📝 **Améliorations de documentation**
+- 🎨 **Améliorations UI/UX**
+- ⚡ **Optimisations de performance**
+- 🌐 **Améliorations d'accessibilité**
+
+### 📖 Ressources pour les contributeurs
+
+- [Guide de Contribution](CONTRIBUTING.md)
+- [Code de Conduite](CODE_OF_CONDUCT.md)
+- [Signaler un Bug](../../issues/new?template=bug_report.yml)
+- [Proposer une Fonctionnalité](../../issues/new?template=feature_request.yml)
+- [Poser une Question](../../issues/new?template=question.yml)
+
+---
+
+## 🔒 **Sécurité**
+
+Si vous découvrez une vulnérabilité de sécurité, veuillez consulter notre [Politique de Sécurité](SECURITY.md) pour savoir comment la signaler de manière responsable.
 
 ---
 
 ## 📄 **Licence**
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ---
 
@@ -136,7 +169,23 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 - **Ville de Montréal** pour la mise à disposition des données publiques
 - **Communauté open source** pour les outils et bibliothèques utilisés
-- **Utilisateurs** qui ont signalé les problèmes d'UX de la plateforme officielle
+- **Contributeurs** qui améliorent continuellement ce projet
+- **Utilisateurs** qui signalent les problèmes et proposent des améliorations
+
+## 👥 **Contributeurs**
+
+Merci à toutes les personnes qui contribuent à ce projet !
+
+[![Contributors](https://contrib.rocks/image?repo=mathis-m/next-loisirs-montreal)](https://github.com/mathis-m/next-loisirs-montreal/graphs/contributors)
+
+---
+
+## 📊 **Statistiques du projet**
+
+![GitHub stars](https://img.shields.io/github/stars/mathis-m/next-loisirs-montreal?style=social)
+![GitHub forks](https://img.shields.io/github/forks/mathis-m/next-loisirs-montreal?style=social)
+![GitHub issues](https://img.shields.io/github/issues/mathis-m/next-loisirs-montreal)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/mathis-m/next-loisirs-montreal)
 
 ---
 
@@ -147,3 +196,7 @@ Cette application est **non officielle** et n'est pas affiliée à la Ville de M
 ---
 
 **CréneauSport - Fait avec ❤️ pour la communauté montréalaise**
+
+[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/mathis-m/next-loisirs-montreal)
+[![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black.svg)](https://nextjs.org/)
+[![Powered by TypeScript](https://img.shields.io/badge/Powered%20by-TypeScript-blue.svg)](https://www.typescriptlang.org/)
