@@ -183,7 +183,7 @@ export default function Home() {
                   </Button>
 
                   {isBoroughDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+                    <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 slide-in-from-top-2">
                       {boroughs.map((borough) => {
                         const isSelected = selectedBoroughs.includes(
                           borough.id
