@@ -65,7 +65,7 @@ function SheetContent({
         className={cn(
           'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
           side === 'right' &&
-            'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm',
+            'data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-full border-l sm:max-w-sm',
           side === 'left' &&
             'data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
           side === 'top' &&
@@ -204,6 +204,21 @@ export default function FiltersSheet() {
     }
   }, [dropdownOpen]);
 
+  // Clear site selection when it's no longer in the filtered list
+  useEffect(() => {
+    if (siteId && boroughIds) {
+      const selectedBoroughIds = boroughIds.split(',').map((id) => Number(id));
+      const selectedSite = sites.find((site) => site.id === siteId);
+
+      if (
+        selectedSite &&
+        !selectedBoroughIds.includes(selectedSite.boroughId)
+      ) {
+        setSiteId(undefined);
+      }
+    }
+  }, [boroughIds, siteId]);
+
   return (
     <Sheet
       open={open}
@@ -215,7 +230,10 @@ export default function FiltersSheet() {
         setOpen(newOpen);
       }}
     >
-      <SheetContent showCloseButton={hasRequiredFilters} className="gap-1">
+      <SheetContent
+        showCloseButton={hasRequiredFilters}
+        className="gap-1 flex flex-col"
+      >
         <SheetHeader>
           <SheetTitle>Modifier les filtres</SheetTitle>
           <SheetDescription>
@@ -224,209 +242,329 @@ export default function FiltersSheet() {
           </SheetDescription>
         </SheetHeader>
 
-        {(!searchString || !boroughIds || !dates || dates.length === 0) && (
-          <div className="flex flex-col gap-4 px-4">
-            <Alert variant="destructive" className="m-auto w-fit">
-              <AlertCircleIcon />
-              <AlertTitle>Filtres obligatoires manquants</AlertTitle>
-              <AlertDescription>
-                <p>
-                  Veuillez sélectionner au moins un sport, une date et un
-                  arrondissement afin d&apos;optimiser les temps de recherche.
-                </p>
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
+        <div className="flex-1 overflow-y-auto">
+          {(!searchString || !boroughIds || !dates || dates.length === 0) && (
+            <div className="flex flex-col gap-4 px-4">
+              <Alert variant="destructive" className="m-auto w-fit">
+                <AlertCircleIcon />
+                <AlertTitle>Filtres obligatoires manquants</AlertTitle>
+                <AlertDescription>
+                  <p>
+                    Veuillez sélectionner au moins un sport, une date et un
+                    arrondissement afin d&apos;optimiser les temps de recherche.
+                  </p>
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
 
-        <div className="flex flex-col gap-4 p-4">
-          {/* Field 1: Sport (tennis, tennis de table, badminton, pickleball, volleyball) */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="sport">Sport *</Label>
-            <Select
-              value={searchString || ''}
-              onValueChange={(value) => setSearchString(value)}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Sélectionnez un sport..." />
-              </SelectTrigger>
-              <SelectContent>
-                {sports.map((s) => (
-                  <SelectItem key={s.id} value={s.name}>
-                    {s.name.slice(0, 1).toUpperCase() + s.name.slice(1)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <div className="flex flex-col gap-4 p-4">
+            {/* Field 1: Sport (tennis, tennis de table, badminton, pickleball, volleyball) */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="sport">Sport *</Label>
+              <Select
+                value={searchString || ''}
+                onValueChange={(value) => setSearchString(value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sélectionnez un sport..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {sports.map((s) => (
+                    <SelectItem key={s.id} value={s.name}>
+                      {s.name.slice(0, 1).toUpperCase() + s.name.slice(1)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* Field 2: Dates */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="date" className="px-1">
-              Dates *
-            </Label>
-            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  id="date"
-                  className="w-full justify-between font-normal"
+            {/* Field 2: Dates */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="date" className="px-1">
+                Dates *
+              </Label>
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    id="date"
+                    className="w-full justify-between font-normal"
+                  >
+                    {dates && dates.length > 0
+                      ? `${dates.length} date${dates.length !== 1 ? 's' : ''} sélectionnée${dates.length !== 1 ? 's' : ''}`
+                      : 'Sélectionnez des dates...'}
+                    <CalendarIcon />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-auto overflow-hidden p-0"
+                  align="start"
                 >
-                  {dates && dates.length > 0
-                    ? dates
-                        .map((d) => new Date(d).toLocaleDateString('fr-FR'))
-                        .join(', ')
-                    : 'Sélectionnez des dates...'}
-                  <CalendarIcon />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-auto overflow-hidden p-0"
-                align="start"
-              >
-                <Calendar
-                  mode="multiple"
-                  selected={dates?.map((d) => new Date(d))}
-                  captionLayout="dropdown"
-                  disabled={(date) => {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    return date < today;
-                  }}
-                  onSelect={(d) => {
-                    setDates(d?.map((d) => d.toISOString()) ?? []);
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+                  <Calendar
+                    mode="multiple"
+                    selected={dates?.map((d) => new Date(d))}
+                    captionLayout="dropdown"
+                    disabled={(date) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      return date < today;
+                    }}
+                    onSelect={(d) => {
+                      setDates(d?.map((d) => d.toISOString()) ?? []);
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
 
-          {/* Field 3: Arrondissement (...) - Multiple select */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="boroughs">Arrondissements *</Label>
-            <div className="relative" ref={dropdownRef}>
-              <Button
-                variant="outline"
-                role="combobox"
-                className="w-full justify-between text-left font-normal"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                {boroughIds && boroughIds.length > 0 ? (
-                  <span>
-                    {boroughIds.split(',').length === 1
-                      ? boroughs.find((b) => b.id === Number(boroughIds))?.name
-                      : `${boroughIds.split(',').length} arrondissements sélectionnés`}
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">
-                    {breakpoint === 'xs'
-                      ? `Sélectionnez des arrondissements`.slice(0, 25) + '...'
-                      : `Sélectionnez des arrondissements...`}
-                  </span>
-                )}
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-
-              {dropdownOpen && (
-                <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
-                  {boroughs.map((borough) => {
-                    const isSelected = boroughIds
-                      ?.split(',')
-                      .includes(borough.id.toString());
-
-                    return (
-                      <div
-                        key={borough.id}
-                        className="flex items-center space-x-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
-                        onClick={() => {
-                          const currentIds = boroughIds
-                            ? boroughIds.split(',')
-                            : [];
-                          const boroughIdStr = borough.id.toString();
-
-                          if (isSelected) {
-                            // Remove borough
-                            const newIds = currentIds.filter(
-                              (id) => id !== boroughIdStr
-                            );
-                            setBoroughIds(
-                              newIds.length > 0 ? newIds.join(',') : undefined
-                            );
-                          } else {
-                            // Add borough
-                            const newIds = [...currentIds, boroughIdStr];
-                            setBoroughIds(newIds.join(','));
-                          }
-                        }}
-                      >
-                        <div className="flex h-4 w-4 items-center justify-center rounded-sm border border-primary">
-                          {isSelected && <Check className="h-3 w-3" />}
-                        </div>
-                        <span className="flex-1">{borough.name}</span>
-                      </div>
-                    );
-                  })}
+              {/* Selected Dates Display */}
+              {dates && dates.length > 0 && (
+                <div className="mt-2">
+                  <p className="text-sm font-medium text-foreground mb-2">
+                    Dates sélectionnées:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {dates
+                      .sort(
+                        (a, b) => new Date(a).getTime() - new Date(b).getTime()
+                      )
+                      .map((dateStr, index) => {
+                        const date = new Date(dateStr);
+                        return (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                          >
+                            {date.toLocaleDateString('fr-FR', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                            <button
+                              onClick={() => {
+                                const newDates = dates.filter(
+                                  (d) => d !== dateStr
+                                );
+                                setDates(newDates);
+                              }}
+                              className="ml-2 hover:text-primary/70"
+                            >
+                              <XIcon className="size-3 cursor-pointer" />
+                            </button>
+                          </span>
+                        );
+                      })}
+                  </div>
                 </div>
               )}
             </div>
-          </div>
 
-          {/* Field 4: Site (...) - Single select */}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="sites">Sites</Label>
-            <Select
-              value={sites.find((s) => s.id === siteId)?.name || ''}
-              onValueChange={(value) =>
-                setSiteId(sites.find((s) => s.name === value)?.id)
-              }
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Sélectionnez un site..." />
-              </SelectTrigger>
-              <SelectContent>
-                {sites.map((s) => (
-                  <SelectItem key={s.id} value={s.name}>
-                    {s.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+            {/* Field 3: Arrondissement (...) - Multiple select */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="boroughs">Arrondissements *</Label>
+              <div className="relative" ref={dropdownRef}>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-between text-left font-normal"
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  {boroughIds && boroughIds.length > 0 ? (
+                    <span>
+                      {`${boroughIds.split(',').length} arrondissement${boroughIds.split(',').length !== 1 ? 's' : ''} sélectionné${boroughIds.split(',').length !== 1 ? 's' : ''}`}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground">
+                      {breakpoint === 'xs'
+                        ? `Sélectionnez des arrondissements`.slice(0, 25) +
+                          '...'
+                        : `Sélectionnez des arrondissements...`}
+                    </span>
+                  )}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
 
-          <div className="flex flex-row gap-2 w-full">
-            {/* Field 5: Start Time */}
-            <div className="flex flex-col gap-2 grow">
-              <Label htmlFor="start-time-picker" className="px-1">
-                Heure de début
-              </Label>
-              <Input
-                type="time"
-                id="start-time-picker"
-                step="1"
-                value={startTime ?? ''}
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                onChange={(e) => setStartTime(e.target.value)}
-              />
+                {dropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+                    {boroughs.map((borough) => {
+                      const isSelected = boroughIds
+                        ?.split(',')
+                        .includes(borough.id.toString());
+
+                      return (
+                        <div
+                          key={borough.id}
+                          className="flex items-center space-x-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                          onClick={() => {
+                            const currentIds = boroughIds
+                              ? boroughIds.split(',')
+                              : [];
+                            const boroughIdStr = borough.id.toString();
+
+                            if (isSelected) {
+                              // Remove borough
+                              const newIds = currentIds.filter(
+                                (id) => id !== boroughIdStr
+                              );
+                              setBoroughIds(
+                                newIds.length > 0 ? newIds.join(',') : undefined
+                              );
+                            } else {
+                              // Add borough
+                              const newIds = [...currentIds, boroughIdStr];
+                              setBoroughIds(newIds.join(','));
+                            }
+                          }}
+                        >
+                          <div className="flex h-4 w-4 items-center justify-center rounded-sm border border-primary">
+                            {isSelected && <Check className="h-3 w-3" />}
+                          </div>
+                          <span className="flex-1">{borough.name}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Selected Boroughs Display */}
+              {boroughIds && boroughIds.length > 0 && (
+                <div className="mt-2">
+                  <p className="text-sm font-medium text-foreground mb-2">
+                    Arrondissements sélectionnés:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {boroughIds
+                      .split(',')
+                      .sort((a, b) => {
+                        const nameA =
+                          boroughs.find((borough) => borough.id === Number(a))
+                            ?.name || '';
+                        const nameB =
+                          boroughs.find((borough) => borough.id === Number(b))
+                            ?.name || '';
+                        return nameA.localeCompare(nameB);
+                      })
+                      .map((boroughIdStr) => {
+                        const boroughId = Number(boroughIdStr);
+                        const borough = boroughs.find(
+                          (b) => b.id === boroughId
+                        );
+                        return (
+                          <span
+                            key={boroughId}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                          >
+                            {borough?.name}
+                            <button
+                              onClick={() => {
+                                const currentIds = boroughIds
+                                  ? boroughIds.split(',')
+                                  : [];
+                                const newIds = currentIds.filter(
+                                  (id) => id !== boroughIdStr
+                                );
+                                setBoroughIds(
+                                  newIds.length > 0
+                                    ? newIds.join(',')
+                                    : undefined
+                                );
+                              }}
+                              className="ml-2 hover:text-primary/70"
+                            >
+                              <XIcon className="size-3 cursor-pointer" />
+                            </button>
+                          </span>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Field 6: End Time */}
-            <div className="flex flex-col gap-2 grow">
-              <Label htmlFor="end-time-picker" className="px-1">
-                Heure de fin
-              </Label>
-              <Input
-                type="time"
-                id="end-time-picker"
-                step="1"
-                value={endTime ?? ''}
-                onChange={(e) => setEndTime(e.target.value)}
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-              />
-            </div>
-          </div>
+            {/* Field 4: Site (...) - Single select */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="sites">Sites</Label>
+              <Select
+                value={sites.find((s) => s.id === siteId)?.name || ''}
+                onValueChange={(value) => {
+                  if (value === '__clear__') {
+                    setSiteId(undefined);
+                  } else {
+                    setSiteId(sites.find((s) => s.name === value)?.id);
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sélectionnez un site..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {siteId && (
+                    <SelectItem
+                      value="__clear__"
+                      className="text-muted-foreground italic"
+                    >
+                      Tous les sites
+                    </SelectItem>
+                  )}
+                  {(() => {
+                    // Filter sites based on selected neighborhoods
+                    const selectedBoroughIds = boroughIds
+                      ? boroughIds.split(',').map((id) => Number(id))
+                      : [];
 
-          {/* Field 7: Type de plateau */}
-          {/* TODO IF NEEDED */}
+                    const filteredSites =
+                      selectedBoroughIds.length > 0
+                        ? sites.filter((site) =>
+                            selectedBoroughIds.includes(site.boroughId)
+                          )
+                        : sites;
+
+                    return filteredSites.map((s) => (
+                      <SelectItem key={s.id} value={s.name}>
+                        {s.name}
+                      </SelectItem>
+                    ));
+                  })()}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-2 w-full">
+              {/* Field 5: Start Time */}
+              <div className="flex flex-col gap-2 grow">
+                <Label htmlFor="start-time-picker" className="px-1">
+                  Heure de début
+                </Label>
+                <Input
+                  type="time"
+                  id="start-time-picker"
+                  step="1"
+                  value={startTime ?? ''}
+                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  onChange={(e) => setStartTime(e.target.value)}
+                />
+              </div>
+
+              {/* Field 6: End Time */}
+              <div className="flex flex-col gap-2 grow">
+                <Label htmlFor="end-time-picker" className="px-1">
+                  Heure de fin
+                </Label>
+                <Input
+                  type="time"
+                  id="end-time-picker"
+                  step="1"
+                  value={endTime ?? ''}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                />
+              </div>
+            </div>
+
+            {/* Field 7: Type de plateau */}
+            {/* TODO IF NEEDED */}
+          </div>
         </div>
 
         <SheetFooter>

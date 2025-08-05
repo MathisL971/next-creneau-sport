@@ -1,8 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { CalendarIcon, MapPinIcon, TagIcon } from 'lucide-react';
+import {
+  CalendarIcon,
+  MapPinIcon,
+  TagIcon,
+  XIcon,
+  Check,
+  ChevronsUpDown,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -23,9 +30,29 @@ import { sports, boroughs } from '@/data/facilities';
 export default function Home() {
   const router = useRouter();
   const [selectedSport, setSelectedSport] = useState<number | null>(null);
-  const [selectedBorough, setSelectedBorough] = useState<number | null>(null);
+  const [selectedBoroughs, setSelectedBoroughs] = useState<number[]>([]);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isBoroughDropdownOpen, setIsBoroughDropdownOpen] = useState(false);
+  const boroughDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close borough dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        boroughDropdownRef.current &&
+        !boroughDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsBoroughDropdownOpen(false);
+      }
+    }
+
+    if (isBoroughDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isBoroughDropdownOpen]);
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date) return;
@@ -43,8 +70,24 @@ export default function Home() {
     });
   };
 
+  const handleBoroughSelect = (boroughId: number) => {
+    setSelectedBoroughs((prev) => {
+      const isAlreadySelected = prev.includes(boroughId);
+
+      if (isAlreadySelected) {
+        return prev.filter((id) => id !== boroughId);
+      } else {
+        return [...prev, boroughId];
+      }
+    });
+  };
+
   const handleSearch = () => {
-    if (!selectedSport || !selectedBorough || selectedDates.length === 0) {
+    if (
+      !selectedSport ||
+      selectedBoroughs.length === 0 ||
+      selectedDates.length === 0
+    ) {
       return;
     }
 
@@ -54,7 +97,7 @@ export default function Home() {
 
     const params = new URLSearchParams();
     // Don't set facilityTypeIds from home page as requested
-    params.set('boroughIds', selectedBorough.toString());
+    params.set('boroughIds', selectedBoroughs.join(','));
     params.set(
       'dates',
       JSON.stringify(selectedDates.map((date) => date.toISOString()))
@@ -65,7 +108,7 @@ export default function Home() {
   };
 
   const isFormValid =
-    selectedSport && selectedBorough && selectedDates.length > 0;
+    selectedSport && selectedBoroughs.length > 0 && selectedDates.length > 0;
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col grow">
@@ -110,30 +153,58 @@ export default function Home() {
                   </SelectContent>
                 </Select>
               </div>
+
               {/* Borough Selection */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MapPinIcon className="size-4" />
-                  Arrondissement
+                  Arrondissements ({selectedBoroughs.length} sélectionné
+                  {selectedBoroughs.length !== 1 ? 's' : ''})
                 </label>
-                <Select
-                  value={selectedBorough?.toString() || ''}
-                  onValueChange={(value) => setSelectedBorough(Number(value))}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Choisissez un arrondissement" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {boroughs.map((borough) => (
-                      <SelectItem
-                        key={borough.id}
-                        value={borough.id.toString()}
-                      >
-                        {borough.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="relative" ref={boroughDropdownRef}>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className="w-full justify-between text-left font-normal"
+                    onClick={() =>
+                      setIsBoroughDropdownOpen(!isBoroughDropdownOpen)
+                    }
+                  >
+                    {selectedBoroughs.length > 0 ? (
+                      <span>
+                        {`${selectedBoroughs.length} arrondissement${selectedBoroughs.length !== 1 ? 's' : ''} sélectionné${selectedBoroughs.length !== 1 ? 's' : ''}`}
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground">
+                        Choisissez vos arrondissements
+                      </span>
+                    )}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+
+                  {isBoroughDropdownOpen && (
+                    <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[300px] overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+                      {boroughs.map((borough) => {
+                        const isSelected = selectedBoroughs.includes(
+                          borough.id
+                        );
+
+                        return (
+                          <div
+                            key={borough.id}
+                            className="flex items-center space-x-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground"
+                            onClick={() => handleBoroughSelect(borough.id)}
+                          >
+                            <div className="flex h-4 w-4 items-center justify-center rounded-sm border border-primary">
+                              {isSelected && <Check className="h-3 w-3" />}
+                            </div>
+                            <span className="flex-1">{borough.name}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Date Selection */}
@@ -185,9 +256,47 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Selected Boroughs Display */}
+            {selectedBoroughs.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium text-foreground mb-2">
+                  Arrondissements sélectionnés:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedBoroughs
+                    .sort((a, b) => {
+                      const nameA =
+                        boroughs.find((borough) => borough.id === a)?.name ||
+                        '';
+                      const nameB =
+                        boroughs.find((borough) => borough.id === b)?.name ||
+                        '';
+                      return nameA.localeCompare(nameB);
+                    })
+                    .map((boroughId) => {
+                      const borough = boroughs.find((b) => b.id === boroughId);
+                      return (
+                        <span
+                          key={boroughId}
+                          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                        >
+                          {borough?.name}
+                          <button
+                            onClick={() => handleBoroughSelect(boroughId)}
+                            className="ml-2 hover:text-primary/70"
+                          >
+                            <XIcon className="size-3 cursor-pointer" />
+                          </button>
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
             {/* Selected Dates Display */}
             {selectedDates.length > 0 && (
-              <div className="mb-6">
+              <div className="mb-4">
                 <p className="text-sm font-medium text-foreground mb-2">
                   Dates sélectionnées:
                 </p>
@@ -208,7 +317,7 @@ export default function Home() {
                           onClick={() => handleDateSelect(date)}
                           className="ml-2 hover:text-primary/70"
                         >
-                          ×
+                          <XIcon className="size-3 cursor-pointer" />
                         </button>
                       </span>
                     ))}
@@ -228,8 +337,8 @@ export default function Home() {
 
             {!isFormValid && (
               <p className="text-sm text-muted-foreground mt-2 text-center">
-                Veuillez sélectionner un sport, un arrondissement et des dates
-                pour effectuer une recherche
+                Veuillez sélectionner un sport et au moins un arrondissement et
+                une date pour effectuer une recherche
               </p>
             )}
           </div>
