@@ -10,18 +10,18 @@
     "typescript",
     "public-services"
   ],
-  "homepage": "https://github.com/mathis-m/next-loisirs-montreal#readme",
+  "homepage": "https://github.com/MathisL971/next-creneau-sport#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mathis-m/next-loisirs-montreal.git"
+    "url": "git+https://github.com/MathisL971/next-creneau-sport.git"
   },
   "bugs": {
-    "url": "https://github.com/mathis-m/next-loisirs-montreal/issues"
+    "url": "https://github.com/MathisL971/next-creneau-sport/issues"
   },
   "license": "MIT",
   "author": {
     "name": "Mathis M",
-    "url": "https://github.com/mathis-m"
+    "url": "https://github.com/MathisL971"
   },
   "scripts": {
     "dev": "next dev --turbopack",

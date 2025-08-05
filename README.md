@@ -1,10 +1,10 @@
 # 🏟️ CréneauSport
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/ci.yml/badge.svg)](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/codeql.yml/badge.svg)](https://github.com/mathis-m/next-loisirs-montreal/actions/workflows/codeql.yml)
+[![CI](https://github.com/MathisL971/next-creneau-sport/actions/workflows/ci.yml/badge.svg)](https://github.com/MathisL971/next-creneau-sport/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/MathisL971/next-creneau-sport/actions/workflows/codeql.yml/badge.svg)](https://github.com/MathisL971/next-creneau-sport/actions/workflows/codeql.yml)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Contributors](https://img.shields.io/github/contributors/mathis-m/next-loisirs-montreal.svg)](https://github.com/mathis-m/next-loisirs-montreal/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/MathisL971/next-creneau-sport.svg)](https://github.com/MathisL971/next-creneau-sport/graphs/contributors)
 
 **CréneauSport - Interface alternative dédiée à la réservation d'espaces sportifs et de loisirs de la Ville de Montréal**
 
@@ -67,8 +67,8 @@ Cette application est une réponse directe aux défis d'utilisabilité de la pla
 
 ```bash
 # Cloner le projet
-git clone https://github.com/mathis-m/next-loisirs-montreal.git
-cd next-loisirs-montreal
+git clone https://github.com/MathisL971/next-creneau-sport.git
+cd next-creneau-sport
 
 # Installer les dépendances
 pnpm install
@@ -176,16 +176,16 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 Merci à toutes les personnes qui contribuent à ce projet !
 
-[![Contributors](https://contrib.rocks/image?repo=mathis-m/next-loisirs-montreal)](https://github.com/mathis-m/next-loisirs-montreal/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=MathisL971/next-creneau-sport)](https://github.com/MathisL971/next-creneau-sport/graphs/contributors)
 
 ---
 
 ## 📊 **Statistiques du projet**
 
-![GitHub stars](https://img.shields.io/github/stars/mathis-m/next-loisirs-montreal?style=social)
-![GitHub forks](https://img.shields.io/github/forks/mathis-m/next-loisirs-montreal?style=social)
-![GitHub issues](https://img.shields.io/github/issues/mathis-m/next-loisirs-montreal)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/mathis-m/next-loisirs-montreal)
+![GitHub stars](https://img.shields.io/github/stars/MathisL971/next-creneau-sport?style=social)
+![GitHub forks](https://img.shields.io/github/forks/MathisL971/next-creneau-sport?style=social)
+![GitHub issues](https://img.shields.io/github/issues/MathisL971/next-creneau-sport)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/MathisL971/next-creneau-sport)
 
 ---
 
@@ -197,6 +197,6 @@ Cette application est **non officielle** et n'est pas affiliée à la Ville de M
 
 **CréneauSport - Fait avec ❤️ pour la communauté montréalaise**
 
-[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/mathis-m/next-loisirs-montreal)
+[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/MathisL971/next-creneau-sport)
 [![Built with Next.js](https://img.shields.io/badge/Built%20with-Next.js-black.svg)](https://nextjs.org/)
 [![Powered by TypeScript](https://img.shields.io/badge/Powered%20by-TypeScript-blue.svg)](https://www.typescriptlang.org/)

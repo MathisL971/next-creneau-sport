@@ -48,11 +48,11 @@ En participant à ce projet, vous acceptez de respecter notre [Code de Conduite]
 ```bash
 # 1. Forkez le repository sur GitHub
 # 2. Clonez votre fork
-git clone https://github.com/VOTRE-USERNAME/next-loisirs-montreal.git
-cd next-loisirs-montreal
+git clone https://github.com/VOTRE-USERNAME/next-creneau-sport.git
+cd next-creneau-sport
 
 # 3. Ajoutez le repository original comme remote
-git remote add upstream https://github.com/mathis-m/next-loisirs-montreal.git
+git remote add upstream https://github.com/MathisL971/next-creneau-sport.git
 
 # 4. Installez les dépendances
 pnpm install

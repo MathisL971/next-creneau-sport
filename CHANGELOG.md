@@ -46,5 +46,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 📍 Borough-based filtering
 - 📅 Date range selection
 
-[Unreleased]: https://github.com/mathis-m/next-loisirs-montreal/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/mathis-m/next-loisirs-montreal/releases/tag/v0.1.0
+[Unreleased]: https://github.com/MathisL971/next-creneau-sport/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/MathisL971/next-creneau-sport/releases/tag/v0.1.0
