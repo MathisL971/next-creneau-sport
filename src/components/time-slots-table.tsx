@@ -11,7 +11,7 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table';
-import { LockIcon, LockOpenIcon } from 'lucide-react';
+import { LockIcon, CirclePlusIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -131,7 +131,7 @@ export const columns: ColumnDef<FacilityReservation>[] = [
           }}
         >
           {reservation.canReserve.value ? (
-            <LockOpenIcon size={20} />
+            <CirclePlusIcon size={20} />
           ) : (
             <LockIcon size={20} />
           )}
