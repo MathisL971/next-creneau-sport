@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   title: 'CréneauSport',
   description:
     'Trouvez et réservez des créneaux disponibles pour vos activités sportives à Montréal',
+  other: {
+    google: 'notranslate',
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning translate="no">
       <head>
         {/* Canny SDK - Simple Setup */}
         <script async src="https://canny.io/sdk.js"></script>
