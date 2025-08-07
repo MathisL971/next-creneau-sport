@@ -1,12 +1,16 @@
 'use client';
 
 import { ModeToggle } from './mode-toggle';
+import LanguageSwitcher from './language-switcher';
 import { MapPin, MessageSquare } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { Button } from './ui/button';
+import { useTranslations } from 'next-intl';
 
 export default function AppHeader() {
+  const t = useTranslations('Header');
+
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,9 +33,7 @@ export default function AppHeader() {
                   </h1>
                   <div className="hidden sm:flex items-center space-x-1 text-xs text-muted-foreground">
                     <MapPin className="h-3 w-3 flex-shrink-0" />
-                    <span className="truncate">
-                      Activités sportives à Montréal
-                    </span>
+                    <span className="truncate">{t('tagline')}</span>
                   </div>
                 </div>
               </div>
@@ -48,7 +50,7 @@ export default function AppHeader() {
               className="hidden sm:flex items-center space-x-2 text-xs bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 hover:bg-primary/10 hover:border-primary/30 text-primary hover:text-primary"
             >
               <MessageSquare className="h-3 w-3" />
-              <span>Feedback</span>
+              <span>{t('feedback')}</span>
             </Button>
 
             {/* Feedback Button - Mobile */}
@@ -81,7 +83,7 @@ export default function AppHeader() {
                   width={16}
                   height={12}
                 />
-                <span>Soutenir</span>
+                <span>{t('support')}</span>
               </a>
             </Button>
             <Button
@@ -103,6 +105,7 @@ export default function AppHeader() {
                 />
               </a>
             </Button>
+            <LanguageSwitcher />
             <ModeToggle />
           </nav>
         </div>

@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/table';
 import { FacilityReservation } from '@/types/reservation';
 import { useFilters } from '@/hooks/useFilters';
+import { useTranslations, useLocale } from 'next-intl';
 
 export type TimeSlotsResponse = {
   results: FacilityReservation[];
@@ -147,7 +148,119 @@ export default function TimeSlotsTable({
   timeSlots: TimeSlotsResponse;
 }) {
   const { filters, updateFilters } = useFilters();
+  const t = useTranslations('TimeSlotsTable');
+  const locale = useLocale();
   const [isClient, setIsClient] = React.useState(false);
+
+  // Create translated columns
+  const translatedColumns: ColumnDef<FacilityReservation>[] = React.useMemo(
+    () => [
+      {
+        accessorFn: (row) => row.canReserve.value,
+        id: 'canReserve.value',
+        header: t('status'),
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {row.getValue('canReserve.value')
+              ? t('available')
+              : t('unavailable')}
+          </div>
+        ),
+      },
+      {
+        accessorFn: (row) => row.facility.name,
+        id: 'facility.name',
+        header: t('site'),
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {(row.getValue('facility.name') as string)
+              .split(', ')
+              .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+              .join(', ')}
+          </div>
+        ),
+      },
+      {
+        accessorFn: (row) => [row.startDateTime, row.endDateTime],
+        id: 'time',
+        header: t('when'),
+        cell: ({ row }) => {
+          const [startDateTime, endDateTime] = row.getValue('time') as [
+            string,
+            string,
+          ];
+
+          // Use locale-aware formatting
+          const formatDateTime = (dateStr: string) => {
+            const date = new Date(dateStr);
+            return (
+              date.toLocaleDateString(locale) +
+              ' ' +
+              date.toLocaleTimeString(locale, {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+              })
+            );
+          };
+
+          const formatTime = (dateStr: string) => {
+            const date = new Date(dateStr);
+            return date.toLocaleTimeString(locale, {
+              hour12: false,
+              hour: '2-digit',
+              minute: '2-digit',
+            });
+          };
+
+          return (
+            <div>
+              {formatDateTime(startDateTime)} - {formatTime(endDateTime)}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'totalPrice',
+        header: t('price'),
+        cell: ({ row }) => {
+          const totalPrice = row.getValue('totalPrice') as number;
+          return <div>{totalPrice} $</div>;
+        },
+      },
+      {
+        id: 'actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+          const reservation = row.original;
+
+          return (
+            <Button
+              variant={reservation.canReserve.value ? 'outline' : 'destructive'}
+              className={`h-8 w-8 p-0 ${
+                reservation.canReserve.value
+                  ? 'cursor-pointer'
+                  : 'cursor-not-allowed'
+              }`}
+              onClick={() => {
+                if (reservation.canReserve.value) {
+                  const finalUrl = `https://loisirs.montreal.ca/IC3/#/U6510/view/${reservation.facility.id}/${reservation.startDateTime}/${reservation.endDateTime}/${reservation.facilityScheduleId}`;
+                  window.open(finalUrl, '_blank');
+                }
+              }}
+            >
+              {reservation.canReserve.value ? (
+                <CirclePlusIcon size={20} />
+              ) : (
+                <LockIcon size={20} />
+              )}
+            </Button>
+          );
+        },
+      },
+    ],
+    [t, locale]
+  );
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -263,7 +376,7 @@ export default function TimeSlotsTable({
 
   const table = useReactTable({
     data: timeSlots?.results || [],
-    columns,
+    columns: translatedColumns,
     onColumnFiltersChange: setColumnFilters,
     onPaginationChange: handlePaginationChange,
     getCoreRowModel: getCoreRowModel(),
@@ -325,7 +438,7 @@ export default function TimeSlotsTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Aucun résultat.
+                  {t('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -336,9 +449,14 @@ export default function TimeSlotsTable({
         <div className="text-muted-foreground text-sm order-2 sm:order-1 text-center sm:text-left">
           {isClient && totalResults > 0 && (
             <span>
-              Affichage de {filters.offset + 1} à{' '}
-              {Math.min(filters.offset + currentPageResults, estimatedTotal)}{' '}
-              sur {estimatedTotal} résultats au total.
+              {t('resultsCount', {
+                from: filters.offset + 1,
+                to: Math.min(
+                  filters.offset + currentPageResults,
+                  estimatedTotal
+                ),
+                total: estimatedTotal,
+              })}
             </span>
           )}
         </div>
@@ -347,9 +465,9 @@ export default function TimeSlotsTable({
           {/* Page size selector */}
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium hidden sm:block">
-              Lignes par page
+              {t('rowsPerPage')}
             </p>
-            <p className="text-sm font-medium sm:hidden">Lignes</p>
+            <p className="text-sm font-medium sm:hidden">{t('rows')}</p>
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
@@ -378,11 +496,13 @@ export default function TimeSlotsTable({
           <div className="flex min-w-0 items-center justify-center text-sm font-medium">
             {isClient ? (
               <span className="whitespace-nowrap">
-                Page {pagination.pageIndex + 1} sur{' '}
-                {Math.max(1, table.getPageCount())}
+                {t('pageOf', {
+                  current: pagination.pageIndex + 1,
+                  total: Math.max(1, table.getPageCount()),
+                })}
               </span>
             ) : (
-              'Chargement...'
+              t('loading')
             )}
           </div>
 
@@ -394,7 +514,7 @@ export default function TimeSlotsTable({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Aller à la première page</span>⇤
+              <span className="sr-only">{t('goToFirstPage')}</span>⇤
             </Button>
             <Button
               variant="outline"
@@ -402,7 +522,7 @@ export default function TimeSlotsTable({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Aller à la page précédente</span>←
+              <span className="sr-only">{t('goToPreviousPage')}</span>←
             </Button>
             <Button
               variant="outline"
@@ -410,7 +530,7 @@ export default function TimeSlotsTable({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Aller à la page suivante</span>→
+              <span className="sr-only">{t('goToNextPage')}</span>→
             </Button>
             <Button
               variant="outline"
@@ -418,7 +538,7 @@ export default function TimeSlotsTable({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Aller à la dernière page</span>⇥
+              <span className="sr-only">{t('goToLastPage')}</span>⇥
             </Button>
           </div>
         </div>

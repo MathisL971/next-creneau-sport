@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   CalendarIcon,
   MapPinIcon,
@@ -29,6 +30,8 @@ import { sports, boroughs } from '@/data/facilities';
 
 export default function Home() {
   const router = useRouter();
+  const t = useTranslations('HomePage');
+  const locale = useLocale();
   const [selectedSport, setSelectedSport] = useState<number | null>(null);
   const [selectedBoroughs, setSelectedBoroughs] = useState<number[]>([]);
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
@@ -117,13 +120,11 @@ export default function Home() {
           {/* Hero Section */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
-              Trouvez vos créneaux de
-              <span className="text-primary block">loisirs à Montréal</span>
+              {t('title')}
+              <span className="text-primary block">{t('titleHighlight')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Découvrez et réservez facilement des créneaux pour vos activités
-              sportives préférées dans les installations municipales de
-              Montréal.
+              {t('description')}
             </p>
           </div>
 
@@ -134,14 +135,14 @@ export default function Home() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <TagIcon className="size-4" />
-                  Sport
+                  {t('sport')}
                 </label>
                 <Select
                   value={selectedSport?.toString() || ''}
                   onValueChange={(value) => setSelectedSport(Number(value))}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Choisissez votre sport" />
+                    <SelectValue placeholder={t('sportPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {sports.map((sport) => (
@@ -158,8 +159,7 @@ export default function Home() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <MapPinIcon className="size-4" />
-                  Arrondissements ({selectedBoroughs.length} sélectionné
-                  {selectedBoroughs.length !== 1 ? 's' : ''})
+                  {t('boroughs')}
                 </label>
                 <div className="relative" ref={boroughDropdownRef}>
                   <Button
@@ -172,11 +172,13 @@ export default function Home() {
                   >
                     {selectedBoroughs.length > 0 ? (
                       <span>
-                        {`${selectedBoroughs.length} arrondissement${selectedBoroughs.length !== 1 ? 's' : ''} sélectionné${selectedBoroughs.length !== 1 ? 's' : ''}`}
+                        {t('boroughsSelected', {
+                          count: selectedBoroughs.length,
+                        })}
                       </span>
                     ) : (
                       <span className="text-muted-foreground">
-                        Choisissez vos arrondissements
+                        {t('boroughsPlaceholder')}
                       </span>
                     )}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -211,8 +213,7 @@ export default function Home() {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <CalendarIcon className="size-4" />
-                  Dates ({selectedDates.length} sélectionnée
-                  {selectedDates.length !== 1 ? 's' : ''})
+                  {t('dates')}
                 </label>
                 <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                   <PopoverTrigger asChild>
@@ -225,8 +226,10 @@ export default function Home() {
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {selectedDates.length > 0
-                        ? `${selectedDates.length} date${selectedDates.length !== 1 ? 's' : ''} sélectionnée${selectedDates.length !== 1 ? 's' : ''}`
-                        : 'Sélectionnez vos dates'}
+                        ? t('datesSelected', {
+                            count: selectedDates.length,
+                          })
+                        : t('datesPlaceholder')}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -247,8 +250,9 @@ export default function Home() {
                         className="w-full"
                         onClick={() => setIsCalendarOpen(false)}
                       >
-                        Confirmer ({selectedDates.length} date
-                        {selectedDates.length !== 1 ? 's' : ''})
+                        {t('confirmDates', {
+                          count: selectedDates.length,
+                        })}
                       </Button>
                     </div>
                   </PopoverContent>
@@ -260,7 +264,7 @@ export default function Home() {
             {selectedBoroughs.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm font-medium text-foreground mb-2">
-                  Arrondissements sélectionnés:
+                  {t('selectedBoroughs')}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {selectedBoroughs
@@ -298,7 +302,7 @@ export default function Home() {
             {selectedDates.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm font-medium text-foreground mb-2">
-                  Dates sélectionnées:
+                  {t('selectedDates')}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {selectedDates
@@ -308,7 +312,7 @@ export default function Home() {
                         key={index}
                         className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
                       >
-                        {date.toLocaleDateString('fr-FR', {
+                        {date.toLocaleDateString(locale, {
                           day: '2-digit',
                           month: 'long',
                           year: 'numeric',
@@ -332,13 +336,12 @@ export default function Home() {
               size="lg"
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Rechercher les créneaux disponibles
+              {t('searchButton')}
             </Button>
 
             {!isFormValid && (
               <p className="text-sm text-muted-foreground mt-2 text-center">
-                Veuillez sélectionner un sport et au moins un arrondissement et
-                une date pour effectuer une recherche
+                {t('validationMessage')}
               </p>
             )}
           </div>
@@ -350,10 +353,10 @@ export default function Home() {
                 <TagIcon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">
-                Sélection simplifiée
+                {t('features.selection.title')}
               </h3>
               <p className="text-muted-foreground">
-                Choisissez facilement votre sport et votre secteur préféré
+                {t('features.selection.description')}
               </p>
             </div>
             <div className="space-y-4">
@@ -361,10 +364,10 @@ export default function Home() {
                 <CalendarIcon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">
-                Planification flexible
+                {t('features.planning.title')}
               </h3>
               <p className="text-muted-foreground">
-                Sélectionnez plusieurs dates pour maximiser vos options
+                {t('features.planning.description')}
               </p>
             </div>
             <div className="space-y-4">
@@ -372,10 +375,10 @@ export default function Home() {
                 <MapPinIcon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">
-                Proximité
+                {t('features.proximity.title')}
               </h3>
               <p className="text-muted-foreground">
-                Découvrez les installations près de chez vous
+                {t('features.proximity.description')}
               </p>
             </div>
           </div>

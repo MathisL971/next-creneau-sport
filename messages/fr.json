@@ -1,0 +1,132 @@
+{
+  "Metadata": {
+    "title": "CréneauSport",
+    "description": "Trouvez et réservez des créneaux disponibles pour vos activités sportives à Montréal"
+  },
+  "Header": {
+    "tagline": "Activités sportives à Montréal",
+    "feedback": "Feedback",
+    "support": "Soutenir"
+  },
+  "HomePage": {
+    "title": "Trouvez vos créneaux de",
+    "titleHighlight": "loisirs à Montréal",
+    "description": "Découvrez et réservez facilement des créneaux pour vos activités sportives préférées dans les installations municipales de Montréal.",
+    "sport": "Sport",
+    "sportPlaceholder": "Choisissez votre sport",
+    "boroughs": "Arrondissements",
+    "boroughsPlaceholder": "Choisissez vos arrondissements",
+    "boroughsSelected": "{count, plural, =1 {# arrondissement sélectionné} other {# arrondissements sélectionnés}}",
+    "dates": "Dates",
+    "datesPlaceholder": "Sélectionnez vos dates",
+    "datesSelected": "{count, plural, =1 {# date sélectionnée} other {# dates sélectionnées}}",
+    "confirmDates": "Confirmer ({count, plural, =1 {# date} other {# dates}})",
+    "selectedBoroughs": "Arrondissements sélectionnés:",
+    "selectedDates": "Dates sélectionnées:",
+    "searchButton": "Rechercher les créneaux disponibles",
+    "validationMessage": "Veuillez sélectionner un sport et au moins un arrondissement et une date pour effectuer une recherche",
+    "features": {
+      "selection": {
+        "title": "Sélection simplifiée",
+        "description": "Choisissez facilement votre sport et votre secteur préféré"
+      },
+      "planning": {
+        "title": "Planification flexible",
+        "description": "Sélectionnez plusieurs dates pour maximiser vos options"
+      },
+      "proximity": {
+        "title": "Proximité",
+        "description": "Découvrez les installations près de chez vous"
+      }
+    }
+  },
+  "Footer": {
+    "about": "À propos",
+    "aboutDescription": "CréneauSport est une interface alternative dédiée à la réservation d'espaces sportifs et de loisirs de la Ville de Montréal. Créée pour offrir une expérience utilisateur améliorée par rapport à la plateforme officielle, avec une recherche plus intuitive et une navigation simplifiée.",
+    "resources": "Ressources",
+    "officialSite": "Site officiel Loisirs Montréal",
+    "cityOfMontreal": "Ville de Montréal",
+    "feedbackSuggestions": "Feedback & Suggestions",
+    "supportProject": "Soutenir le projet",
+    "copyright": "© {year} Application non-officielle pour",
+    "dataProvider": "Données fournies par la Ville de Montréal"
+  },
+  "TimeSlotsPage": {
+    "title": "Créneaux Disponibles",
+    "filters": "Filtres"
+  },
+  "FiltersSheet": {
+    "title": "Modifier les filtres",
+    "description": "Apportez des modifications à vos filtres ici. Cliquez sur sauvegarder quand vous avez terminé.",
+    "missingFiltersTitle": "Filtres obligatoires manquants",
+    "missingFiltersDescription": "Veuillez sélectionner au moins un sport, une date et un arrondissement afin d'optimiser les temps de recherche.",
+    "sport": "Sport",
+    "sportRequired": "Sport *",
+    "sportPlaceholder": "Sélectionnez un sport...",
+    "dates": "Dates",
+    "datesRequired": "Dates *",
+    "datesPlaceholder": "Sélectionnez des dates...",
+    "datesSelected": "{count, plural, =1 {# date sélectionnée} other {# dates sélectionnées}}",
+    "boroughs": "Arrondissements",
+    "boroughsRequired": "Arrondissements *",
+    "boroughsPlaceholder": "Sélectionnez des arrondissements...",
+    "boroughsSelected": "{count, plural, =1 {# arrondissement sélectionné} other {# arrondissements sélectionnés}}",
+    "site": "Site",
+    "sitePlaceholder": "Sélectionnez un site...",
+    "startTime": "Heure de début",
+    "startTimePlaceholder": "Sélectionnez une heure...",
+    "endTime": "Heure de fin",
+    "endTimePlaceholder": "Sélectionnez une heure...",
+    "selectedDates": "Dates sélectionnées:",
+    "selectedBoroughs": "Arrondissements sélectionnés:",
+    "allSites": "Tous les sites",
+    "resetFilters": "Réinitialiser les filtres",
+    "saveChanges": "Sauvegarder les modifications"
+  },
+  "TimeSlotsTable": {
+    "status": "Statut",
+    "available": "Disponible",
+    "unavailable": "Indisponible",
+    "site": "Site",
+    "when": "Quand ?",
+    "price": "Prix",
+    "reserve": "Réserver",
+    "resultsCount": "{from} - {to} sur {total} résultats au total.",
+    "rowsPerPage": "Lignes par page",
+    "rows": "Lignes",
+    "loading": "Chargement...",
+    "pageOf": "Page {current} sur {total}",
+    "goToFirstPage": "Aller à la première page",
+    "goToPreviousPage": "Aller à la page précédente",
+    "goToNextPage": "Aller à la page suivante",
+    "goToLastPage": "Aller à la dernière page",
+    "noResults": "Aucun résultat."
+  },
+  "ThemeToggle": {
+    "toggleTheme": "Basculer le thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "Common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "close": "Fermer",
+    "switchLanguage": "Changer de langue",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "clear": "Effacer",
+    "select": "Sélectionner",
+    "selectAll": "Tout sélectionner",
+    "deselectAll": "Tout désélectionner"
+  }
+}

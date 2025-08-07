@@ -1,0 +1,132 @@
+{
+  "Metadata": {
+    "title": "CréneauSport",
+    "description": "Find and book available time slots for your sports activities in Montreal"
+  },
+  "Header": {
+    "tagline": "Sports activities in Montreal",
+    "feedback": "Feedback",
+    "support": "Support"
+  },
+  "HomePage": {
+    "title": "Find your",
+    "titleHighlight": "leisure time slots in Montreal",
+    "description": "Easily discover and book time slots for your favorite sports activities in Montreal's municipal facilities.",
+    "sport": "Sport",
+    "sportPlaceholder": "Choose your sport",
+    "boroughs": "Boroughs",
+    "boroughsPlaceholder": "Choose your boroughs",
+    "boroughsSelected": "{count, plural, =1 {# borough selected} other {# boroughs selected}}",
+    "dates": "Dates",
+    "datesPlaceholder": "Select your dates",
+    "datesSelected": "{count, plural, =1 {# date selected} other {# dates selected}}",
+    "confirmDates": "Confirm ({count, plural, =1 {# date} other {# dates}})",
+    "selectedBoroughs": "Selected boroughs:",
+    "selectedDates": "Selected dates:",
+    "searchButton": "Search available time slots",
+    "validationMessage": "Please select a sport and at least one borough and one date to perform a search",
+    "features": {
+      "selection": {
+        "title": "Simplified selection",
+        "description": "Easily choose your preferred sport and area"
+      },
+      "planning": {
+        "title": "Flexible planning",
+        "description": "Select multiple dates to maximize your options"
+      },
+      "proximity": {
+        "title": "Proximity",
+        "description": "Discover facilities near you"
+      }
+    }
+  },
+  "Footer": {
+    "about": "About",
+    "aboutDescription": "CréneauSport is an alternative interface dedicated to booking sports and leisure facilities of the City of Montreal. Created to offer an improved user experience compared to the official platform, with more intuitive search and simplified navigation.",
+    "resources": "Resources",
+    "officialSite": "Official Montreal Leisure Site",
+    "cityOfMontreal": "City of Montreal",
+    "feedbackSuggestions": "Feedback & Suggestions",
+    "supportProject": "Support the project",
+    "copyright": "© {year} Unofficial application for",
+    "dataProvider": "Data provided by the City of Montreal"
+  },
+  "TimeSlotsPage": {
+    "title": "Available Time Slots",
+    "filters": "Filters"
+  },
+  "FiltersSheet": {
+    "title": "Modify filters",
+    "description": "Make changes to your filters here. Click save when you're done.",
+    "missingFiltersTitle": "Missing required filters",
+    "missingFiltersDescription": "Please select at least one sport, one date and one borough to optimize search times.",
+    "sport": "Sport",
+    "sportRequired": "Sport *",
+    "sportPlaceholder": "Select a sport...",
+    "dates": "Dates",
+    "datesRequired": "Dates *",
+    "datesPlaceholder": "Select dates...",
+    "datesSelected": "{count, plural, =1 {# date selected} other {# dates selected}}",
+    "boroughs": "Boroughs",
+    "boroughsRequired": "Boroughs *",
+    "boroughsPlaceholder": "Select boroughs...",
+    "boroughsSelected": "{count, plural, =1 {# borough selected} other {# boroughs selected}}",
+    "site": "Site",
+    "sitePlaceholder": "Select a site...",
+    "startTime": "Start time",
+    "startTimePlaceholder": "Select a time...",
+    "endTime": "End time",
+    "endTimePlaceholder": "Select a time...",
+    "selectedDates": "Selected dates:",
+    "selectedBoroughs": "Selected boroughs:",
+    "allSites": "All sites",
+    "resetFilters": "Reset filters",
+    "saveChanges": "Save changes"
+  },
+  "TimeSlotsTable": {
+    "status": "Status",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "site": "Site",
+    "when": "When?",
+    "price": "Price",
+    "reserve": "Reserve",
+    "resultsCount": "{from} - {to} of {total} total results.",
+    "rowsPerPage": "Rows per page",
+    "rows": "Rows",
+    "loading": "Loading...",
+    "pageOf": "Page {current} of {total}",
+    "goToFirstPage": "Go to first page",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "goToLastPage": "Go to last page",
+    "noResults": "No results."
+  },
+  "ThemeToggle": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "close": "Close",
+    "switchLanguage": "Switch language",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all"
+  }
+}

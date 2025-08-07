@@ -40,6 +40,7 @@ import * as React from 'react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { sports, boroughs, sites } from '@/data/facilities';
+import { useTranslations } from 'next-intl';
 
 export const filtersSheetOpenAtom = atom(false);
 
@@ -135,6 +136,8 @@ const filtersEqual = (
 export default function FiltersSheet() {
   const { filters, updateFilters, hasRequiredFilters } = useFilters();
   const breakpoint = useBreakpoint();
+  const t = useTranslations('FiltersSheet');
+  const tCommon = useTranslations('Common');
   const [searchString, setSearchString] = useState(
     filters.searchString ?? undefined
   );
@@ -235,11 +238,8 @@ export default function FiltersSheet() {
         className="gap-1 flex flex-col"
       >
         <SheetHeader>
-          <SheetTitle>Modifier les filtres</SheetTitle>
-          <SheetDescription>
-            Apportez des modifications à vos filtres ici. Cliquez sur
-            sauvegarder quand vous avez terminé.
-          </SheetDescription>
+          <SheetTitle>{t('title')}</SheetTitle>
+          <SheetDescription>{t('description')}</SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto">
@@ -247,12 +247,9 @@ export default function FiltersSheet() {
             <div className="flex flex-col gap-4 px-4">
               <Alert variant="destructive" className="m-auto w-fit">
                 <AlertCircleIcon />
-                <AlertTitle>Filtres obligatoires manquants</AlertTitle>
+                <AlertTitle>{t('missingFiltersTitle')}</AlertTitle>
                 <AlertDescription>
-                  <p>
-                    Veuillez sélectionner au moins un sport, une date et un
-                    arrondissement afin d&apos;optimiser les temps de recherche.
-                  </p>
+                  <p>{t('missingFiltersDescription')}</p>
                 </AlertDescription>
               </Alert>
             </div>
@@ -261,13 +258,13 @@ export default function FiltersSheet() {
           <div className="flex flex-col gap-4 p-4">
             {/* Field 1: Sport (tennis, tennis de table, badminton, pickleball, volleyball) */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="sport">Sport *</Label>
+              <Label htmlFor="sport">{t('sportRequired')}</Label>
               <Select
                 value={searchString || ''}
                 onValueChange={(value) => setSearchString(value)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sélectionnez un sport..." />
+                  <SelectValue placeholder={t('sportPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {sports.map((s) => (
@@ -282,7 +279,7 @@ export default function FiltersSheet() {
             {/* Field 2: Dates */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="date" className="px-1">
-                Dates *
+                {t('datesRequired')}
               </Label>
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                 <PopoverTrigger asChild>
@@ -292,8 +289,8 @@ export default function FiltersSheet() {
                     className="w-full justify-between font-normal"
                   >
                     {dates && dates.length > 0
-                      ? `${dates.length} date${dates.length !== 1 ? 's' : ''} sélectionnée${dates.length !== 1 ? 's' : ''}`
-                      : 'Sélectionnez des dates...'}
+                      ? t('datesSelected', { count: dates.length })
+                      : t('datesPlaceholder')}
                     <CalendarIcon />
                   </Button>
                 </PopoverTrigger>
@@ -321,7 +318,7 @@ export default function FiltersSheet() {
               {dates && dates.length > 0 && (
                 <div className="mt-2">
                   <p className="text-sm font-medium text-foreground mb-2">
-                    Dates sélectionnées:
+                    {t('selectedDates')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {dates
@@ -361,7 +358,7 @@ export default function FiltersSheet() {
 
             {/* Field 3: Arrondissement (...) - Multiple select */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="boroughs">Arrondissements *</Label>
+              <Label htmlFor="boroughs">{t('boroughsRequired')}</Label>
               <div className="relative" ref={dropdownRef}>
                 <Button
                   variant="outline"
@@ -371,14 +368,15 @@ export default function FiltersSheet() {
                 >
                   {boroughIds && boroughIds.length > 0 ? (
                     <span>
-                      {`${boroughIds.split(',').length} arrondissement${boroughIds.split(',').length !== 1 ? 's' : ''} sélectionné${boroughIds.split(',').length !== 1 ? 's' : ''}`}
+                      {t('boroughsSelected', {
+                        count: boroughIds.split(',').length,
+                      })}
                     </span>
                   ) : (
                     <span className="text-muted-foreground">
                       {breakpoint === 'xs'
-                        ? `Sélectionnez des arrondissements`.slice(0, 25) +
-                          '...'
-                        : `Sélectionnez des arrondissements...`}
+                        ? t('boroughsPlaceholder').slice(0, 25) + '...'
+                        : t('boroughsPlaceholder')}
                     </span>
                   )}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -431,7 +429,7 @@ export default function FiltersSheet() {
               {boroughIds && boroughIds.length > 0 && (
                 <div className="mt-2">
                   <p className="text-sm font-medium text-foreground mb-2">
-                    Arrondissements sélectionnés:
+                    {t('selectedBoroughs')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {boroughIds
@@ -484,7 +482,7 @@ export default function FiltersSheet() {
 
             {/* Field 4: Site (...) - Single select */}
             <div className="flex flex-col gap-2">
-              <Label htmlFor="sites">Sites</Label>
+              <Label htmlFor="sites">{t('site')}</Label>
               <Select
                 value={sites.find((s) => s.id === siteId)?.name || ''}
                 onValueChange={(value) => {
@@ -496,7 +494,7 @@ export default function FiltersSheet() {
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sélectionnez un site..." />
+                  <SelectValue placeholder={t('sitePlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {siteId && (
@@ -504,7 +502,7 @@ export default function FiltersSheet() {
                       value="__clear__"
                       className="text-muted-foreground italic"
                     >
-                      Tous les sites
+                      {t('allSites')}
                     </SelectItem>
                   )}
                   {(() => {
@@ -534,7 +532,7 @@ export default function FiltersSheet() {
               {/* Field 5: Start Time */}
               <div className="flex flex-col gap-2 grow">
                 <Label htmlFor="start-time-picker" className="px-1">
-                  Heure de début
+                  {t('startTime')}
                 </Label>
                 <Input
                   type="time"
@@ -549,7 +547,7 @@ export default function FiltersSheet() {
               {/* Field 6: End Time */}
               <div className="flex flex-col gap-2 grow">
                 <Label htmlFor="end-time-picker" className="px-1">
-                  Heure de fin
+                  {t('endTime')}
                 </Label>
                 <Input
                   type="time"
@@ -609,7 +607,7 @@ export default function FiltersSheet() {
               }
             }}
           >
-            Sauvegarder
+            {t('saveChanges')}
           </Button>
           <Button
             variant="outline"
@@ -642,11 +640,11 @@ export default function FiltersSheet() {
               !endTime
             }
           >
-            Réinitialiser les filtres
+            {t('resetFilters')}
           </Button>
           <SheetClose asChild>
             <Button variant="outline" disabled={!hasRequiredFilters}>
-              Fermer
+              {tCommon('close')}
             </Button>
           </SheetClose>
         </SheetFooter>

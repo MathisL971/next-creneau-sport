@@ -1,8 +1,12 @@
+'use client';
+
 import { ExternalLink, Heart, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export default function AppFooter() {
   const currentYear = new Date().getFullYear();
+  const t = useTranslations('Footer');
 
   return (
     <footer className="border-t bg-background">
@@ -11,20 +15,16 @@ export default function AppFooter() {
           {/* About Section */}
           <div className="space-y-3 col-span-2">
             <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-              À propos
+              {t('about')}
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              CréneauSport est une interface alternative dédiée à la réservation
-              d&apos;espaces sportifs et de loisirs de la Ville de Montréal.
-              Créée pour offrir une expérience utilisateur améliorée par rapport
-              à la plateforme officielle, avec une recherche plus intuitive et
-              une navigation simplifiée.
+              {t('aboutDescription')}
             </p>
           </div>
           {/* Resources Section */}
           <div className="space-y-3">
             <h3 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-              Ressources
+              {t('resources')}
             </h3>
             <div className="space-y-2">
               <a
@@ -34,7 +34,7 @@ export default function AppFooter() {
                 className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ExternalLink className="h-3 w-3" />
-                <span>Site officiel Loisirs Montréal</span>
+                <span>{t('officialSite')}</span>
               </a>
               <a
                 href="https://montreal.ca"
@@ -43,7 +43,7 @@ export default function AppFooter() {
                 className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ExternalLink className="h-3 w-3" />
-                <span>Ville de Montréal</span>
+                <span>{t('cityOfMontreal')}</span>
               </a>
               <a
                 href="https://creneausport.canny.io/feedback"
@@ -52,7 +52,7 @@ export default function AppFooter() {
                 className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <MessageSquare className="h-3 w-3" />
-                <span>Feedback & Suggestions</span>
+                <span>{t('feedbackSuggestions')}</span>
               </a>
               <a
                 href="https://ko-fi.com/mathislefranc"
@@ -66,7 +66,7 @@ export default function AppFooter() {
                   width={16}
                   height={12}
                 />
-                <span>Soutenir le projet</span>
+                <span>{t('supportProject')}</span>
               </a>
             </div>
           </div>
@@ -75,14 +75,14 @@ export default function AppFooter() {
         {/* Bottom Section */}
         <div className="mt-8 pt-6 border-t flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 text-center sm:text-left">
           <div className="flex flex-wrap items-center justify-center sm:justify-start space-x-1 text-xs text-muted-foreground">
-            <span>© {currentYear} Application non-officielle pour</span>
+            <span>{t('copyright', { year: currentYear })}</span>
             <div className="flex items-center space-x-1">
               <Heart className="h-3 w-3 text-red-500 flex-shrink-0" />
               <span>CréneauSport</span>
             </div>
           </div>
           <div className="text-xs text-muted-foreground">
-            Données fournies par la Ville de Montréal
+            {t('dataProvider')}
           </div>
         </div>
       </div>
