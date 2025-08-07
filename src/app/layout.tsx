@@ -8,6 +8,8 @@ import AppHeader from '@/components/app-header';
 import AppFooter from '@/components/app-footer';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
+import { PostHogPageView } from '@/components/posthog-pageview';
+import { PHProvider } from '@/components/posthog-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -56,16 +58,19 @@ export default async function RootLayout({
         }}
       >
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <AppHeader />
-            <main className="flex flex-col w-full grow">{children}</main>
-            <AppFooter />
-          </ThemeProvider>
+          <PHProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <PostHogPageView />
+              <AppHeader />
+              <main className="flex flex-col w-full grow">{children}</main>
+              <AppFooter />
+            </ThemeProvider>
+          </PHProvider>
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
