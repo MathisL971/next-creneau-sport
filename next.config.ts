@@ -41,12 +41,12 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://us.i.posthog.com https://us-assets.i.posthog.com;
-              connect-src 'self' https://us.i.posthog.com https://vitals.vercel-insights.com;
+              script-src 'self' 'unsafe-eval' 'unsafe-inline' https://us.i.posthog.com https://us-assets.i.posthog.com https://canny.io https://vercel.live;
+              connect-src 'self' https://us.i.posthog.com https://vitals.vercel-insights.com https://canny.io;
               img-src 'self' data: blob: https:;
               style-src 'self' 'unsafe-inline';
               font-src 'self' data:;
-              frame-src 'self';
+              frame-src 'self' https://canny.io;
             `
               .replace(/\s+/g, ' ')
               .trim(),
