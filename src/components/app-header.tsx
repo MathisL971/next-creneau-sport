@@ -82,6 +82,7 @@ export default function AppHeader() {
                   alt="Ko-fi"
                   width={16}
                   height={12}
+                  className="w-4 h-3 object-contain"
                 />
                 <span>{t('support')}</span>
               </a>
@@ -102,6 +103,7 @@ export default function AppHeader() {
                   alt="Ko-fi"
                   width={16}
                   height={12}
+                  className="w-4 h-3 object-contain"
                 />
               </a>
             </Button>
