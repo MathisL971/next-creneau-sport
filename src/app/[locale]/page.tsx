@@ -165,7 +165,7 @@ export default function Home() {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="w-full justify-between text-left font-normal bg-transparent"
+                    className="w-full justify-between text-left font-normal bg-transparent border-input"
                     onClick={() =>
                       setIsBoroughDropdownOpen(!isBoroughDropdownOpen)
                     }
@@ -220,7 +220,7 @@ export default function Home() {
                     <Button
                       variant="outline"
                       className={cn(
-                        'w-full justify-start text-left font-normal bg-transparent',
+                        'w-full justify-start text-left font-normal bg-transparent border-input',
                         !selectedDates.length && 'text-muted-foreground'
                       )}
                     >
