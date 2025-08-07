@@ -8,6 +8,7 @@ import AppHeader from '@/components/app-header';
 import AppFooter from '@/components/app-footer';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
+import Script from 'next/script';
 import { PostHogPageView } from '@/components/posthog-pageview';
 import { PHProvider } from '@/components/posthog-provider';
 
@@ -43,10 +44,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning translate="no">
-      <head>
-        {/* Canny SDK - Simple Setup */}
-        <script async src="https://canny.io/sdk.js"></script>
-      </head>
+      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
@@ -58,6 +56,7 @@ export default async function RootLayout({
         }}
       >
         <NextIntlClientProvider messages={messages}>
+          <Script src="https://canny.io/sdk.js" strategy="afterInteractive" />
           <PHProvider>
             <ThemeProvider
               attribute="class"

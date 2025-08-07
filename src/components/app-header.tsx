@@ -25,6 +25,7 @@ export default function AppHeader() {
                     width={40}
                     height={40}
                     className="w-full h-full object-contain"
+                    priority
                   />
                 </div>
                 <div className="min-w-0">
