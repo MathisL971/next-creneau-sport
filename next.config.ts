@@ -46,7 +46,7 @@ const nextConfig: NextConfig = {
               img-src 'self' data: blob: https:;
               style-src 'self' 'unsafe-inline';
               font-src 'self' data:;
-              frame-src 'self' https://canny.io;
+              frame-src 'self' https://canny.io https://vercel.live;
             `
               .replace(/\s+/g, ' ')
               .trim(),
