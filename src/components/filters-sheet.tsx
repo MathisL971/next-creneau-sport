@@ -321,7 +321,7 @@ export default function FiltersSheet() {
                     {t('selectedDates')}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {dates
+                    {[...dates]
                       .sort(
                         (a, b) => new Date(a).getTime() - new Date(b).getTime()
                       )
