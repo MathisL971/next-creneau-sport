@@ -653,6 +653,7 @@ export default function FiltersSheet() {
                 dates,
                 startTime,
                 endTime,
+                offset: 0,
               };
 
               updateFilters(newFilters);
