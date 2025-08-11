@@ -6,10 +6,13 @@ import { useLocale, useTranslations } from 'next-intl';
 import {
   CalendarIcon,
   MapPinIcon,
-  TagIcon,
   XIcon,
   Check,
   ChevronsUpDown,
+  Clock,
+  AlarmClock,
+  Dumbbell,
+  Building2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -19,6 +22,14 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -26,7 +37,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { sports, boroughs } from '@/data/facilities';
+import { sports, boroughs, sites } from '@/data/facilities';
+import { Input } from '@/components/ui/input';
 
 export default function SearchForm() {
   const router = useRouter();
@@ -35,10 +47,18 @@ export default function SearchForm() {
 
   const [selectedSport, setSelectedSport] = useState<number | null>(null);
   const [selectedBoroughs, setSelectedBoroughs] = useState<number[]>([]);
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return [today];
+  });
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isBoroughDropdownOpen, setIsBoroughDropdownOpen] = useState(false);
   const boroughDropdownRef = useRef<HTMLDivElement>(null);
+  const [selectedSiteId, setSelectedSiteId] = useState<number | null>(null);
+  const [isSiteOpen, setIsSiteOpen] = useState(false);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -56,6 +76,16 @@ export default function SearchForm() {
         document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isBoroughDropdownOpen]);
+
+  // Clear selected site if it does not belong to selected boroughs
+  useEffect(() => {
+    if (selectedSiteId && selectedBoroughs.length > 0) {
+      const site = sites.find((s) => s.id === selectedSiteId);
+      if (site && !selectedBoroughs.includes(site.boroughId)) {
+        setSelectedSiteId(null);
+      }
+    }
+  }, [selectedBoroughs, selectedSiteId]);
 
   const areSameDay = (a: Date, b: Date) =>
     a.getFullYear() === b.getFullYear() &&
@@ -81,8 +111,8 @@ export default function SearchForm() {
   const handleSearch = () => {
     if (
       !selectedSport ||
-      selectedBoroughs.length === 0 ||
-      selectedDates.length === 0
+      selectedDates.length === 0 ||
+      (selectedBoroughs.length === 0 && selectedSiteId === null)
     ) {
       return;
     }
@@ -98,19 +128,31 @@ export default function SearchForm() {
     );
     params.set('searchString', selectedSportName);
 
+    if (startTime) {
+      params.set('startTime', startTime);
+    }
+    if (endTime) {
+      params.set('endTime', endTime);
+    }
+    if (selectedSiteId) {
+      params.set('siteId', String(selectedSiteId));
+    }
+
     router.push(`/slots?${params.toString()}`);
   };
 
   const isFormValid = Boolean(
-    selectedSport && selectedBoroughs.length > 0 && selectedDates.length > 0
+    selectedSport &&
+      selectedDates.length > 0 &&
+      (selectedBoroughs.length > 0 || selectedSiteId !== null)
   );
 
   return (
-    <div className="bg-white dark:bg-card rounded-2xl shadow-lg border border-gray-200 dark:border-border p-8 mb-8">
+    <div className="bg-card rounded-2xl shadow-lg border border-border p-8 mb-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground flex items-center gap-2">
-            <TagIcon className="size-4" />
+            <Dumbbell className="size-4" />
             {t('sport')}
           </label>
           <Select
@@ -180,6 +222,102 @@ export default function SearchForm() {
         </div>
 
         <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground flex items-center gap-2 px-1">
+            <Building2 className="size-4" />
+            {t('site')}
+          </label>
+          <Popover open={isSiteOpen} onOpenChange={setIsSiteOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={isSiteOpen}
+                className="w-full justify-between text-left font-normal bg-transparent border-input overflow-hidden min-w-0"
+              >
+                <span
+                  className={cn(
+                    'truncate flex-1',
+                    !selectedSiteId && 'text-muted-foreground'
+                  )}
+                >
+                  {selectedSiteId
+                    ? sites.find((s) => s.id === selectedSiteId)?.name
+                    : t('sitePlaceholder')}
+                </span>
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+              <Command>
+                <CommandInput
+                  placeholder={t('sitePlaceholder')}
+                  className="h-9"
+                />
+                <CommandList>
+                  <CommandEmpty>No results.</CommandEmpty>
+                  <CommandGroup>
+                    {selectedSiteId && (
+                      <CommandItem
+                        value="__clear__"
+                        onSelect={() => {
+                          setSelectedSiteId(null);
+                          setIsSiteOpen(false);
+                        }}
+                        className="text-muted-foreground italic"
+                      >
+                        {t('allSites')}
+                      </CommandItem>
+                    )}
+                    {(() => {
+                      const filteredSites =
+                        selectedBoroughs.length > 0
+                          ? sites.filter((site) =>
+                              selectedBoroughs.includes(site.boroughId)
+                            )
+                          : sites;
+                      return filteredSites.map((s) => (
+                        <CommandItem
+                          key={s.id}
+                          value={s.name}
+                          onSelect={(currentValue) => {
+                            const matched = filteredSites.find(
+                              (site) =>
+                                site.name.toLowerCase() ===
+                                currentValue.toLowerCase()
+                            );
+                            if (!matched) {
+                              setSelectedSiteId(null);
+                              setIsSiteOpen(false);
+                              return;
+                            }
+                            setSelectedSiteId(
+                              selectedSiteId === matched.id ? null : matched.id
+                            );
+                            setIsSiteOpen(false);
+                          }}
+                        >
+                          {s.name}
+                          <Check
+                            className={cn(
+                              'ml-auto',
+                              selectedSiteId === s.id
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            )}
+                          />
+                        </CommandItem>
+                      ));
+                    })()}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
+        <div className="space-y-2">
           <label className="text-sm font-medium text-foreground flex items-center gap-2">
             <CalendarIcon className="size-4" />
             {t('dates')}
@@ -222,6 +360,32 @@ export default function SearchForm() {
               </div>
             </PopoverContent>
           </Popover>
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground flex items-center gap-2 px-1">
+            <Clock className="size-4" />
+            {t('startTime')}
+          </label>
+          <Input
+            type="time"
+            step="1"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground flex items-center gap-2 px-1">
+            <AlarmClock className="size-4" />
+            {t('endTime')}
+          </label>
+          <Input
+            type="time"
+            step="1"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+          />
         </div>
       </div>
 

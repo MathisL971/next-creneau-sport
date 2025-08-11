@@ -23,8 +23,13 @@
     "confirmDates": "Confirm ({count, plural, =1 {# date} other {# dates}})",
     "selectedBoroughs": "Selected boroughs:",
     "selectedDates": "Selected dates:",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "site": "Site",
+    "sitePlaceholder": "Select a site...",
+    "allSites": "All sites",
     "searchButton": "Search available time slots",
-    "validationMessage": "Please select a sport and at least one borough and one date to perform a search",
+    "validationMessage": "Select a sport, at least one date, and either one or more boroughs or a site",
     "features": {
       "selection": {
         "title": "Simplified selection",
@@ -59,7 +64,7 @@
     "title": "Modify filters",
     "description": "Make changes to your filters here. Click save when you're done.",
     "missingFiltersTitle": "Missing required filters",
-    "missingFiltersDescription": "Please select at least one sport, one date and one borough to optimize search times.",
+    "missingFiltersDescription": "Please select a sport, at least one date, and either one or more boroughs or a site.",
     "sport": "Sport",
     "sportRequired": "Sport *",
     "sportPlaceholder": "Select a sport...",

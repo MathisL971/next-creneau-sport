@@ -35,6 +35,14 @@ import { atom, useAtom } from 'jotai';
 import { useFilters } from '@/hooks/useFilters';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from './ui/input';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
@@ -160,6 +168,7 @@ export default function FiltersSheet() {
   const [open, setOpen] = useAtom(filtersSheetOpenAtom);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [siteOpen, setSiteOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Sync local state with filters when they change (e.g., from query params)
@@ -235,7 +244,7 @@ export default function FiltersSheet() {
     >
       <SheetContent
         showCloseButton={hasRequiredFilters}
-        className="gap-1 flex flex-col"
+        className="gap-0 flex flex-col"
       >
         <SheetHeader>
           <SheetTitle>{t('title')}</SheetTitle>
@@ -243,18 +252,6 @@ export default function FiltersSheet() {
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto">
-          {(!searchString || !boroughIds || !dates || dates.length === 0) && (
-            <div className="flex flex-col gap-4 px-4">
-              <Alert variant="destructive" className="m-auto w-fit">
-                <AlertCircleIcon />
-                <AlertTitle>{t('missingFiltersTitle')}</AlertTitle>
-                <AlertDescription>
-                  <p>{t('missingFiltersDescription')}</p>
-                </AlertDescription>
-              </Alert>
-            </div>
-          )}
-
           <div className="flex flex-col gap-4 p-4">
             {/* Field 1: Sport (tennis, tennis de table, badminton, pickleball, volleyball) */}
             <div className="flex flex-col gap-2">
@@ -286,7 +283,10 @@ export default function FiltersSheet() {
                   <Button
                     variant="outline"
                     id="date"
-                    className="w-full justify-between font-normal"
+                    className={cn(
+                      'w-full justify-between font-normal',
+                      (!dates || dates.length === 0) && 'text-muted-foreground'
+                    )}
                   >
                     {dates && dates.length > 0
                       ? t('datesSelected', { count: dates.length })
@@ -480,52 +480,101 @@ export default function FiltersSheet() {
               )}
             </div>
 
-            {/* Field 4: Site (...) - Single select */}
+            {/* Field 4: Site (...) - Combobox */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="sites">{t('site')}</Label>
-              <Select
-                value={sites.find((s) => s.id === siteId)?.name || ''}
-                onValueChange={(value) => {
-                  if (value === '__clear__') {
-                    setSiteId(undefined);
-                  } else {
-                    setSiteId(sites.find((s) => s.name === value)?.id);
-                  }
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('sitePlaceholder')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {siteId && (
-                    <SelectItem
-                      value="__clear__"
-                      className="text-muted-foreground italic"
+              <Popover open={siteOpen} onOpenChange={setSiteOpen} modal={false}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={siteOpen}
+                    className="w-full justify-between text-left font-normal"
+                  >
+                    <span
+                      className={cn(
+                        'truncate flex-1',
+                        !siteId && 'text-muted-foreground'
+                      )}
                     >
-                      {t('allSites')}
-                    </SelectItem>
-                  )}
-                  {(() => {
-                    // Filter sites based on selected neighborhoods
-                    const selectedBoroughIds = boroughIds
-                      ? boroughIds.split(',').map((id) => Number(id))
-                      : [];
-
-                    const filteredSites =
-                      selectedBoroughIds.length > 0
-                        ? sites.filter((site) =>
-                            selectedBoroughIds.includes(site.boroughId)
-                          )
-                        : sites;
-
-                    return filteredSites.map((s) => (
-                      <SelectItem key={s.id} value={s.name}>
-                        {s.name}
-                      </SelectItem>
-                    ));
-                  })()}
-                </SelectContent>
-              </Select>
+                      {siteId
+                        ? sites.find((s) => s.id === siteId)?.name
+                        : t('sitePlaceholder')}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[--radix-popover-trigger-width] p-0 z-[70] pointer-events-auto"
+                  onWheelCapture={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
+                >
+                  <Command>
+                    <CommandInput
+                      placeholder={t('sitePlaceholder')}
+                      className="h-9"
+                    />
+                    <CommandList className="max-h-60 overflow-y-auto overscroll-contain touch-pan-y">
+                      <CommandEmpty>No results.</CommandEmpty>
+                      <CommandGroup>
+                        {siteId && (
+                          <CommandItem
+                            value="__clear__"
+                            onSelect={() => {
+                              setSiteId(undefined);
+                              setSiteOpen(false);
+                            }}
+                            className="text-muted-foreground italic"
+                          >
+                            {t('allSites')}
+                          </CommandItem>
+                        )}
+                        {(() => {
+                          const selectedBoroughIds = boroughIds
+                            ? boroughIds.split(',').map((id) => Number(id))
+                            : [];
+                          const filteredSites =
+                            selectedBoroughIds.length > 0
+                              ? sites.filter((site) =>
+                                  selectedBoroughIds.includes(site.boroughId)
+                                )
+                              : sites;
+                          return filteredSites.map((s) => (
+                            <CommandItem
+                              key={s.id}
+                              value={s.name}
+                              onSelect={(currentValue) => {
+                                const matched = filteredSites.find(
+                                  (site) =>
+                                    site.name.toLowerCase() ===
+                                    currentValue.toLowerCase()
+                                );
+                                if (!matched) {
+                                  setSiteId(undefined);
+                                  setSiteOpen(false);
+                                  return;
+                                }
+                                setSiteId(
+                                  siteId === matched.id ? undefined : matched.id
+                                );
+                                setSiteOpen(false);
+                              }}
+                            >
+                              {s.name}
+                              <Check
+                                className={cn(
+                                  'ml-auto',
+                                  siteId === s.id ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                            </CommandItem>
+                          ));
+                        })()}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-2 w-full">
@@ -539,7 +588,7 @@ export default function FiltersSheet() {
                   id="start-time-picker"
                   step="1"
                   value={startTime ?? ''}
-                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                   onChange={(e) => setStartTime(e.target.value)}
                 />
               </div>
@@ -555,7 +604,7 @@ export default function FiltersSheet() {
                   step="1"
                   value={endTime ?? ''}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                 />
               </div>
             </div>
@@ -566,10 +615,22 @@ export default function FiltersSheet() {
         </div>
 
         <SheetFooter>
+          {(!searchString ||
+            (!boroughIds && !siteId) ||
+            !dates ||
+            dates.length === 0) && (
+            <Alert variant="destructive" className="m-auto w-fit">
+              <AlertCircleIcon />
+              <AlertTitle>{t('missingFiltersTitle')}</AlertTitle>
+              <AlertDescription>
+                <p>{t('missingFiltersDescription')}</p>
+              </AlertDescription>
+            </Alert>
+          )}
           <Button
             disabled={
               !searchString ||
-              !boroughIds ||
+              (!boroughIds && !siteId) ||
               !dates ||
               dates.length === 0 ||
               filtersEqual(

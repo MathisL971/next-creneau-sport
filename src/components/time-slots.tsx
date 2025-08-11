@@ -15,10 +15,10 @@ export default async function TimeSlots({
   const params = await searchParams;
 
   const hasMandatoryFilters =
-    params.boroughIds &&
     params.searchString &&
     params.dates &&
-    JSON.parse(params.dates as string).length > 0;
+    JSON.parse(params.dates as string).length > 0 &&
+    (params.boroughIds || params.siteId);
 
   let timeSlotsData = null;
 

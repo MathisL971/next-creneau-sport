@@ -157,10 +157,11 @@ export function useFilters(): {
 
   // Check for required filters
   const hasRequiredFilters =
-    filters.boroughIds !== null &&
     filters.searchString !== null &&
     filters.dates &&
-    filters.dates.length > 0;
+    filters.dates.length > 0 &&
+    (filters.boroughIds !== null ||
+      (filters.siteId !== null && filters.siteId !== undefined));
 
   function updateFilters(partialFilters: Partial<Filters>) {
     setFilters((prevFilters) => {

@@ -23,8 +23,13 @@
     "confirmDates": "Confirmer ({count, plural, =1 {# date} other {# dates}})",
     "selectedBoroughs": "Arrondissements sélectionnés:",
     "selectedDates": "Dates sélectionnées:",
+    "startTime": "Heure de début",
+    "endTime": "Heure de fin",
+    "site": "Site",
+    "sitePlaceholder": "Sélectionnez un site...",
+    "allSites": "Tous les sites",
     "searchButton": "Rechercher les créneaux disponibles",
-    "validationMessage": "Veuillez sélectionner un sport et au moins un arrondissement et une date pour effectuer une recherche",
+    "validationMessage": "Sélectionnez un sport, au moins une date, et soit un ou plusieurs arrondissements, soit un site",
     "features": {
       "selection": {
         "title": "Sélection simplifiée",
@@ -59,7 +64,7 @@
     "title": "Modifier les filtres",
     "description": "Apportez des modifications à vos filtres ici. Cliquez sur sauvegarder quand vous avez terminé.",
     "missingFiltersTitle": "Filtres obligatoires manquants",
-    "missingFiltersDescription": "Veuillez sélectionner au moins un sport, une date et un arrondissement afin d'optimiser les temps de recherche.",
+    "missingFiltersDescription": "Veuillez sélectionner un sport, au moins une date, et soit un ou plusieurs arrondissements, soit un site.",
     "sport": "Sport",
     "sportRequired": "Sport *",
     "sportPlaceholder": "Sélectionnez un sport...",
