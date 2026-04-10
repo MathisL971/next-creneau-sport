@@ -3,7 +3,7 @@
 const baseUrl =
   'https://loisirs.montreal.ca/IC3/api/U6510/public/search/?_=1753903640586';
 
-export async function fetchSlotsFromFiltersAction(filters: any) {
+export async function fetchSlotsFromFiltersAction(filters: Record<string, unknown>) {
   try {
     const response = await fetch(baseUrl, {
       method: 'POST',

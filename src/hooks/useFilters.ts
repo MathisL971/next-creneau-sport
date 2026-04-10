@@ -1,8 +1,7 @@
 import type { Filters } from '@/types/filters';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { DEFAULT_FILTERS } from '@/constants';
-import { useQueryClient } from '@tanstack/react-query';
 import { useAtom } from 'jotai';
 import { filtersAtom } from '@/atoms/filtersAtom';
 
@@ -106,16 +105,11 @@ export function useFilters(): {
 } {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const queryClient = useQueryClient();
-
   // Jotai shared state instead of local useState
   const [filters, setFilters] = useAtom(filtersAtom);
 
-  const [mounted, setMounted] = useState(false);
-
   // Initialize filters from query parameters or defaults
   useEffect(() => {
-    setMounted(true);
     const newFilters = parseQueryToFilters(Object.fromEntries(searchParams));
     setFilters(newFilters);
   }, [searchParams, setFilters]);
