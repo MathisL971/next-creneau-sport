@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import AppHeader from '@/components/app-header';
 import AppFooter from '@/components/app-footer';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
-import { NextIntlClientProvider } from 'next-intl';
 import Script from 'next/script';
 import { PostHogPageView } from '@/components/posthog-pageview';
-import { PHProvider } from '@/components/posthog-provider';
+import Providers from '@/components/providers';
+import { NextIntlClientProvider } from 'next-intl';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -44,7 +43,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning translate="no">
-      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
@@ -56,23 +54,16 @@ export default async function RootLayout({
         }}
       >
         <NextIntlClientProvider messages={messages}>
-          <Script src="https://canny.io/sdk.js" strategy="afterInteractive" />
-          <PHProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <PostHogPageView />
-              <AppHeader />
-              <main className="flex flex-col w-full grow">{children}</main>
-              <AppFooter />
-            </ThemeProvider>
-          </PHProvider>
+          <Providers>
+            <Script src="https://canny.io/sdk.js" strategy="afterInteractive" />
+            <PostHogPageView />
+            <AppHeader />
+            <main className="flex flex-col w-full grow">{children}</main>
+            <AppFooter />
+            <Analytics />
+            <SpeedInsights />
+          </Providers>
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

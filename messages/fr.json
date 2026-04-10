@@ -113,6 +113,12 @@
     "dark": "Sombre",
     "system": "Système"
   },
+  "RalliaBanner": {
+    "badge": "Nouveau",
+    "title": "CréneauSport, maintenant sur votre téléphone — et bien plus.",
+    "description": "Rallia vous permet de réserver des terrains comme ici, directement depuis une app sur votre téléphone. En plus, trouvez des partenaires à votre niveau, planifiez des matchs en un clic, et ne jouez plus jamais seul.",
+    "cta": "Découvrir Rallia"
+  },
   "Common": {
     "loading": "Chargement...",
     "error": "Une erreur s'est produite",

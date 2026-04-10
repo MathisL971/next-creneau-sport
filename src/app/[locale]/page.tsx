@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { CalendarIcon, MapPinIcon, TagIcon } from 'lucide-react';
 import SearchForm from '@/components/search-form';
+import RalliaBanner from '@/components/rallia-banner';
 
 export default async function Home() {
   const t = await getTranslations('HomePage');
@@ -19,6 +20,9 @@ export default async function Home() {
               {t('description')}
             </p>
           </div>
+
+          {/* Rallia Promo */}
+          <RalliaBanner />
 
           {/* Search Form */}
           <SearchForm />

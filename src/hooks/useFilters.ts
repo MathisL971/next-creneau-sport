@@ -1,20 +1,10 @@
 import type { Filters } from '@/types/filters';
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
-import { DEFAULT_PARAMS } from '@/components/time-slots';
-
-// Default filters as a constant
-const DEFAULT_FILTERS: Filters = {
-  boroughIds: null,
-  dates: [],
-  endTime: null,
-  facilityTypeIds: null,
-  searchString: null,
-  siteId: null,
-  startTime: null,
-  ...DEFAULT_PARAMS,
-} as const;
+import { useState, useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { DEFAULT_FILTERS } from '@/constants';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import { filtersAtom } from '@/atoms/filtersAtom';
 
 // Helper functions to serialize/deserialize query parameters
 const serializeValue = (value: unknown): string | undefined => {
@@ -114,38 +104,30 @@ export function useFilters(): {
   hasActiveFilters: boolean;
   hasRequiredFilters: boolean;
 } {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const queryClient = useQueryClient();
+
+  // Jotai shared state instead of local useState
+  const [filters, setFilters] = useAtom(filtersAtom);
+
   const [mounted, setMounted] = useState(false);
-  const pendingURLUpdateRef = useRef<Filters | null>(null);
 
   // Initialize filters from query parameters or defaults
-  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-
-  // Update filters when router query changes
   useEffect(() => {
     setMounted(true);
-    // Only parse query params on client side to avoid hydration mismatch
     const newFilters = parseQueryToFilters(Object.fromEntries(searchParams));
     setFilters(newFilters);
-  }, [searchParams]);
+  }, [searchParams, setFilters]);
 
-  // Handle URL updates in a separate effect to avoid setState during render
-  useEffect(() => {
-    if (pendingURLUpdateRef.current && mounted) {
-      const query = filtersToQuery(pendingURLUpdateRef.current);
-      router.push(`?${new URLSearchParams(query).toString()}`);
-      pendingURLUpdateRef.current = null;
-    }
-  }, [router, mounted, filters]);
+  // React Query refetches when the queryKey changes (filters),
+  // so we avoid manual invalidation to prevent duplicate requests.
 
-  // Check for active filters (non-default values)
   const hasActiveFilters = Object.keys(filters).some((key) => {
     const filterKey = key as keyof Filters;
     const currentValue = filters[filterKey];
     const defaultValue = DEFAULT_FILTERS[filterKey];
 
-    // Handle array comparison
     if (Array.isArray(currentValue) && Array.isArray(defaultValue)) {
       return (
         currentValue.length !== defaultValue.length ||
@@ -155,7 +137,6 @@ export function useFilters(): {
     return currentValue !== defaultValue;
   });
 
-  // Check for required filters
   const hasRequiredFilters =
     filters.searchString !== null &&
     filters.dates &&
@@ -164,22 +145,22 @@ export function useFilters(): {
       (filters.siteId !== null && filters.siteId !== undefined));
 
   function updateFilters(partialFilters: Partial<Filters>) {
-    setFilters((prevFilters) => {
-      const newFilters = {
-        ...prevFilters,
-        ...partialFilters,
-      };
+    const next = { ...filters, ...partialFilters } as Filters;
+    setFilters(next);
 
-      // Schedule URL update to happen in the next effect
-      pendingURLUpdateRef.current = newFilters;
-      return newFilters;
-    });
+    const query = filtersToQuery(next);
+    const queryString = new URLSearchParams(query).toString();
+    if (typeof window !== 'undefined') {
+      const nextUrl = queryString ? `${pathname}?${queryString}` : pathname;
+      window.history.replaceState({}, '', nextUrl);
+    }
   }
 
   function resetFilters() {
     setFilters(DEFAULT_FILTERS);
-    // Schedule URL update to happen in the next effect
-    pendingURLUpdateRef.current = DEFAULT_FILTERS;
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', pathname);
+    }
   }
 
   return {

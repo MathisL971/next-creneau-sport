@@ -113,6 +113,12 @@
     "dark": "Dark",
     "system": "System"
   },
+  "RalliaBanner": {
+    "badge": "New",
+    "title": "CréneauSport, now on your phone — and much more.",
+    "description": "Rallia lets you book courts the same way you do here, directly from an app on your phone. Plus, find partners at your level, schedule games instantly, and never play alone.",
+    "cta": "Discover Rallia"
+  },
   "Common": {
     "loading": "Loading...",
     "error": "An error occurred",

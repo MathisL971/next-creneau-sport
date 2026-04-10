@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
             value: `
               default-src 'self';
               script-src 'self' 'unsafe-eval' 'unsafe-inline' https://us.i.posthog.com https://us-assets.i.posthog.com https://canny.io https://vercel.live https://va.vercel-scripts.com;
-              connect-src 'self' https://us.i.posthog.com https://vitals.vercel-insights.com https://canny.io https://va.vercel-scripts.com;
+              connect-src 'self' https://us.i.posthog.com https://vitals.vercel-insights.com https://canny.io https://va.vercel-scripts.com https://loisirs.montreal.ca;
               img-src 'self' data: blob: https:;
               style-src 'self' 'unsafe-inline';
               font-src 'self' data:;

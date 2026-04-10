@@ -32,6 +32,9 @@ import {
 import { FacilityReservation } from '@/types/reservation';
 import { useFilters } from '@/hooks/useFilters';
 import { useTranslations, useLocale } from 'next-intl';
+import { useQuery } from '@tanstack/react-query';
+import { fetchSlotsFromFiltersViaAction } from '@/services/slots';
+import { Filters } from '@/types/filters';
 
 export type TimeSlotsResponse = {
   results: FacilityReservation[];
@@ -143,14 +146,25 @@ export const columns: ColumnDef<FacilityReservation>[] = [
 ];
 
 export default function TimeSlotsTable({
-  timeSlots,
+  initialFilters,
 }: {
-  timeSlots: TimeSlotsResponse;
+  initialFilters: Filters;
 }) {
   const { filters, updateFilters } = useFilters();
+
   const t = useTranslations('TimeSlotsTable');
   const locale = useLocale();
   const [isClient, setIsClient] = React.useState(false);
+
+  const effectiveFilters = isClient ? filters : initialFilters;
+
+  const { data: timeSlots, isLoading } = useQuery({
+    queryKey: ['slots', effectiveFilters],
+    queryFn: () => fetchSlotsFromFiltersViaAction(effectiveFilters),
+  });
+
+  console.log('Time slots data:', timeSlots);
+  console.log('Is loading:', isLoading);
 
   // Create translated columns
   const translatedColumns: ColumnDef<FacilityReservation>[] = React.useMemo(
@@ -190,16 +204,17 @@ export default function TimeSlotsTable({
             string,
           ];
 
-          // Use locale-aware formatting
+          // Use locale-aware formatting with a fixed timezone to avoid SSR/CSR mismatch
           const formatDateTime = (dateStr: string) => {
             const date = new Date(dateStr);
             return (
-              date.toLocaleDateString(locale) +
+              date.toLocaleDateString(locale, { timeZone: 'UTC' }) +
               ' ' +
               date.toLocaleTimeString(locale, {
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
+                timeZone: 'UTC',
               })
             );
           };
@@ -210,6 +225,7 @@ export default function TimeSlotsTable({
               hour12: false,
               hour: '2-digit',
               minute: '2-digit',
+              timeZone: 'UTC',
             });
           };
 
@@ -270,8 +286,8 @@ export default function TimeSlotsTable({
 
   // Initialize pagination from filters
   const [pagination, setPagination] = React.useState({
-    pageIndex: Math.floor(filters.offset / filters.limit),
-    pageSize: filters.limit,
+    pageIndex: Math.floor(effectiveFilters.offset / effectiveFilters.limit),
+    pageSize: effectiveFilters.limit,
   });
 
   // Set client flag after mount to avoid hydration issues
@@ -393,6 +409,10 @@ export default function TimeSlotsTable({
     },
   });
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="overflow-hidden rounded-md border">
@@ -420,7 +440,7 @@ export default function TimeSlotsTable({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() ? 'selected' : undefined}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="text-center">
@@ -435,7 +455,7 @@ export default function TimeSlotsTable({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={translatedColumns.length}
                   className="h-24 text-center"
                 >
                   {t('noResults')}
@@ -462,7 +482,6 @@ export default function TimeSlotsTable({
         </div>
 
         <div className="flex items-center space-x-2 sm:space-x-6 lg:space-x-8 order-1 sm:order-2 justify-center sm:justify-end">
-          {/* Page size selector */}
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium hidden sm:block">
               {t('rowsPerPage')}
@@ -492,7 +511,6 @@ export default function TimeSlotsTable({
             </Select>
           </div>
 
-          {/* Page navigation info */}
           <div className="flex min-w-0 items-center justify-center text-sm font-medium">
             {isClient ? (
               <span className="whitespace-nowrap">
@@ -506,7 +524,6 @@ export default function TimeSlotsTable({
             )}
           </div>
 
-          {/* Navigation buttons */}
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
