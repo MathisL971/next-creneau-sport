@@ -1,31 +1,11 @@
 import type { Filters } from '@/types/filters';
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { DEFAULT_FILTERS } from '@/constants';
 import { useAtom } from 'jotai';
 import { filtersAtom } from '@/atoms/filtersAtom';
 
-// Helper functions to serialize/deserialize query parameters
-const serializeValue = (value: unknown): string | undefined => {
-  if (value === null || value === undefined) {
-    return undefined;
-  }
-
-  if (Array.isArray(value)) {
-    return value.length > 0 ? JSON.stringify(value) : undefined;
-  }
-  if (typeof value === 'boolean') {
-    return value.toString();
-  }
-  if (typeof value === 'number') {
-    return value.toString();
-  }
-  if (typeof value === 'string') {
-    return value;
-  }
-  return JSON.stringify(value);
-};
-
+// Helper to deserialize a single query parameter into its filter value.
 const deserializeValue = (
   key: string,
   value: string | string[],
@@ -75,26 +55,13 @@ const parseQueryToFilters = (
   return filters;
 };
 
-// Convert filters to query parameters
-const filtersToQuery = (filters: Filters): Record<string, string> => {
-  const query: Record<string, string> = {};
-
-  Object.keys(filters).forEach((key) => {
-    const filterKey = key as keyof Filters;
-    const value = filters[filterKey];
-    const defaultValue = DEFAULT_FILTERS[filterKey];
-
-    // Only add to query if different from default
-    if (JSON.stringify(value) !== JSON.stringify(defaultValue)) {
-      const serialized = serializeValue(value);
-      if (serialized !== undefined) {
-        query[key] = serialized;
-      }
-    }
-  });
-
-  return query;
-};
+// Tracks the last URL query string that was synced into the shared filters
+// atom. `useFilters` is called by several components (the table, the loading
+// skeleton, the filters sheet, ...), and each call has its own init effect.
+// Without this guard, every consumer mount would re-parse the URL and overwrite
+// in-memory state — most visibly resetting the pagination offset back to 0 the
+// moment the loading skeleton mounts. Syncing once per real navigation fixes it.
+let lastSyncedSearch: string | null = null;
 
 export function useFilters(): {
   filters: Filters;
@@ -104,18 +71,28 @@ export function useFilters(): {
   hasRequiredFilters: boolean;
 } {
   const searchParams = useSearchParams();
-  const pathname = usePathname();
+  // Depend on the serialized query string, not the ReadonlyURLSearchParams
+  // object: the object identity can change on every render, which made the
+  // init effect below re-run constantly and clobber in-memory filter/pagination
+  // changes (e.g. resetting offset back to 0 right after paginating).
+  const searchParamsString = searchParams.toString();
   // Jotai shared state instead of local useState
   const [filters, setFilters] = useAtom(filtersAtom);
 
-  // Initialize filters from query parameters or defaults
+  // Initialize filters from the URL query parameters on load (and on real
+  // navigations, e.g. a new search). After that, the atom is the single source
+  // of truth — filter/pagination changes update the atom directly (see
+  // updateFilters), which re-keys the React Query and refetches. Because this
+  // depends on searchParamsString, it only runs when the URL actually changes,
+  // so it no longer reverts in-memory pagination changes.
   useEffect(() => {
-    const newFilters = parseQueryToFilters(Object.fromEntries(searchParams));
+    if (lastSyncedSearch === searchParamsString) return;
+    lastSyncedSearch = searchParamsString;
+    const newFilters = parseQueryToFilters(
+      Object.fromEntries(new URLSearchParams(searchParamsString))
+    );
     setFilters(newFilters);
-  }, [searchParams, setFilters]);
-
-  // React Query refetches when the queryKey changes (filters),
-  // so we avoid manual invalidation to prevent duplicate requests.
+  }, [searchParamsString, setFilters]);
 
   const hasActiveFilters = Object.keys(filters).some((key) => {
     const filterKey = key as keyof Filters;
@@ -138,23 +115,17 @@ export function useFilters(): {
     (filters.boroughIds !== null ||
       (filters.siteId !== null && filters.siteId !== undefined));
 
+  // Filter/pagination changes are kept purely in the shared atom, which is the
+  // single source of truth for the table's React Query. We no longer mirror them
+  // back into the URL (the previous window.history.replaceState approach added
+  // router coupling without a clear benefit here). The initial URL is still
+  // parsed on load above, so deep links / shared search URLs keep working.
   function updateFilters(partialFilters: Partial<Filters>) {
-    const next = { ...filters, ...partialFilters } as Filters;
-    setFilters(next);
-
-    const query = filtersToQuery(next);
-    const queryString = new URLSearchParams(query).toString();
-    if (typeof window !== 'undefined') {
-      const nextUrl = queryString ? `${pathname}?${queryString}` : pathname;
-      window.history.replaceState({}, '', nextUrl);
-    }
+    setFilters({ ...filters, ...partialFilters } as Filters);
   }
 
   function resetFilters() {
     setFilters(DEFAULT_FILTERS);
-    if (typeof window !== 'undefined') {
-      window.history.replaceState({}, '', pathname);
-    }
   }
 
   return {

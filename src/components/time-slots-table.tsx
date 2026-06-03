@@ -161,7 +161,12 @@ export default function TimeSlotsTable({
 
   const { data: timeSlots, isLoading } = useQuery({
     queryKey: ['slots', effectiveFilters],
-    queryFn: () => fetchSlotsFromFiltersViaAction(effectiveFilters),
+    // Read the filters from the queryKey rather than closing over
+    // effectiveFilters: with the React Compiler enabled, a stale closure could
+    // fetch a different offset than the one the query is keyed on (showing the
+    // wrong page). queryKey[1] is always the exact filters this query is for.
+    queryFn: ({ queryKey }) =>
+      fetchSlotsFromFiltersViaAction(queryKey[1] as Filters),
   });
 
   // Create translated columns

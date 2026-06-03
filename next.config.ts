@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     browserDebugInfoInTerminal: true,
-    reactCompiler: true,
+    reactCompiler: false,
   },
   skipTrailingSlashRedirect: true,
   async rewrites() {
