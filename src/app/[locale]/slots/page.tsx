@@ -19,6 +19,11 @@ export default async function SlotsPage({
     ...filters,
     siteId: filters.siteId ? JSON.parse(filters.siteId as string) : null,
     dates: JSON.parse(filters.dates as string),
+    // Coerce pagination params to numbers so the server prefetch query key
+    // matches the client's (which parses them as numbers). Otherwise a
+    // deep-linked paginated URL is a cache miss and refetches on hydration.
+    limit: filters.limit ? Number(filters.limit) : DEFAULT_FILTERS.limit,
+    offset: filters.offset ? Number(filters.offset) : DEFAULT_FILTERS.offset,
   };
 
   const hasMandatoryFilters =

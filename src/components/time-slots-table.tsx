@@ -35,6 +35,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { fetchSlotsFromFiltersViaAction } from '@/services/slots';
 import { Filters } from '@/types/filters';
+import TimeSlotsSkeleton from '@/components/time-slots-skeleton';
 
 export type TimeSlotsResponse = {
   results: FacilityReservation[];
@@ -162,9 +163,6 @@ export default function TimeSlotsTable({
     queryKey: ['slots', effectiveFilters],
     queryFn: () => fetchSlotsFromFiltersViaAction(effectiveFilters),
   });
-
-  console.log('Time slots data:', timeSlots);
-  console.log('Is loading:', isLoading);
 
   // Create translated columns
   const translatedColumns: ColumnDef<FacilityReservation>[] = React.useMemo(
@@ -311,7 +309,10 @@ export default function TimeSlotsTable({
     });
   }, [filters.limit, filters.offset]);
 
-  // Update filters when pagination changes locally
+  // Update filters when pagination changes locally.
+  // Resolve the updater against the current pagination state and call the
+  // setters directly — never call updateFilters() inside a setState updater,
+  // since that would mutate the shared filters atom during render.
   const handlePaginationChange = React.useCallback(
     (
       updatedPagination:
@@ -321,43 +322,27 @@ export default function TimeSlotsTable({
           })
         | { pageIndex: number; pageSize: number }
     ) => {
-      if (typeof updatedPagination === 'function') {
-        setPagination((prev) => {
-          const newPagination = updatedPagination(prev);
-          const newOffset = newPagination.pageIndex * newPagination.pageSize;
+      const newPagination =
+        typeof updatedPagination === 'function'
+          ? updatedPagination(pagination)
+          : updatedPagination;
 
-          // Only update filters if values actually changed
-          if (
-            filters.limit !== newPagination.pageSize ||
-            filters.offset !== newOffset
-          ) {
-            updateFilters({
-              limit: newPagination.pageSize,
-              offset: newOffset,
-            });
-          }
+      setPagination(newPagination);
 
-          return newPagination;
+      const newOffset = newPagination.pageIndex * newPagination.pageSize;
+
+      // Only update filters if values actually changed
+      if (
+        filters.limit !== newPagination.pageSize ||
+        filters.offset !== newOffset
+      ) {
+        updateFilters({
+          limit: newPagination.pageSize,
+          offset: newOffset,
         });
-      } else {
-        const newOffset =
-          updatedPagination.pageIndex * updatedPagination.pageSize;
-
-        // Only update filters if values actually changed
-        if (
-          filters.limit !== updatedPagination.pageSize ||
-          filters.offset !== newOffset
-        ) {
-          updateFilters({
-            limit: updatedPagination.pageSize,
-            offset: newOffset,
-          });
-        }
-
-        setPagination(updatedPagination);
       }
     },
-    [updateFilters, filters.limit, filters.offset]
+    [pagination, updateFilters, filters.limit, filters.offset]
   );
 
   // Calculate total count and page count for display
@@ -410,7 +395,7 @@ export default function TimeSlotsTable({
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <TimeSlotsSkeleton />;
   }
 
   return (
