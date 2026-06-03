@@ -37,7 +37,7 @@ export default function RalliaBanner() {
         </div>
 
         <a
-          href="https://rallia.ca"
+          href="https://rallia.app/?utm_source=referral&utm_medium=organic&utm_campaign=creneausport_redirection"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 shrink-0 rounded-lg bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 transition-colors"
