@@ -207,17 +207,22 @@ export default function TimeSlotsTable({
             string,
           ];
 
-          // Use locale-aware formatting with a fixed timezone to avoid SSR/CSR mismatch
+          // The API returns UTC timestamps (e.g. "...T23:00:00.000Z"). Render
+          // them in Montreal's timezone so a 19:00 local slot shows as 19:00,
+          // not 23:00. A fixed IANA zone (not the runtime's local zone) also
+          // keeps formatting deterministic between server and client.
           const formatDateTime = (dateStr: string) => {
             const date = new Date(dateStr);
             return (
-              date.toLocaleDateString(locale, { timeZone: 'UTC' }) +
+              date.toLocaleDateString(locale, {
+                timeZone: 'America/Toronto',
+              }) +
               ' ' +
               date.toLocaleTimeString(locale, {
                 hour12: false,
                 hour: '2-digit',
                 minute: '2-digit',
-                timeZone: 'UTC',
+                timeZone: 'America/Toronto',
               })
             );
           };
@@ -228,7 +233,7 @@ export default function TimeSlotsTable({
               hour12: false,
               hour: '2-digit',
               minute: '2-digit',
-              timeZone: 'UTC',
+              timeZone: 'America/Toronto',
             });
           };
 
